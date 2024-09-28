@@ -3,7 +3,9 @@
     "tsConfig": "tsconfig.json",
     "jestConfig": "jest.config.js",
     "packageJson": "package.json",
-    "contextFiles": [],
+    "contextFiles": [
+      "jest.config.ts"
+    ],
     "contextTokenLimit": 20000,
     "maxImportDepth": 1,
     "model": "gpt-4o-mini",
