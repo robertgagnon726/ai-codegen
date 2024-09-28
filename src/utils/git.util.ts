@@ -182,7 +182,7 @@ function getChangedFilesWithContent(): Changes {
 
   gitStatusOutput.split('\n').forEach((line) => {
     const changeType = line.substring(0, 2).trim(); 
-    const filePath = line.substring(3).trim();    
+    const filePath = line.substring(2).trim();   
 
     let fileContent = null;
     let originalContent = null;
