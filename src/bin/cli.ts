@@ -100,16 +100,6 @@ program
     }
   });
 
-// Define the "context" command to gather project configurations
-program
-  .command('context')
-  .description('Gather and display essential project configurations')
-  .action(() => {
-    const configs = gatherProjectConfigs();
-    console.log('Parsed Project Configurations:');
-    console.log(JSON.stringify(configs, null, 2));
-  });
-
 // Create a parent `config` command
 const configCommand = program.command('config').description('Manage configuration for the CLI tool');
 
