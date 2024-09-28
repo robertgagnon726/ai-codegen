@@ -1,6 +1,23 @@
 import { FileObject } from "../git/git.types.js";
 
-// TODO BG - convert the file maps to a single util
+/**
+ * Utility function to format file objects into a structured string for use in prompts.
+ * @param title - The title indicating the type of files (e.g., "Added Files", "Modified Files").
+ * @param files - Array of file objects to format.
+ * @returns A formatted string representing the file objects.
+ */
+export function formatFileList(title: string, files: FileObject[]): string {
+  if (!files || files.length === 0) return `${title}:\n(No files)\n`;
+
+  return `
+    ### ${title}:
+    ${files
+    .map(file => `File Name: ${file.path} \nContent: ${file.content ?? '(No content)'} \n----------------------`)
+    .join('\n')}
+
+    \n----------------------
+  `;
+}
 
 /**
  * Creates a prompt for generating test cases without explanations.
@@ -29,20 +46,11 @@ function createTestGenerationPrompt(
 
   Use the context files and imported files only to improve test coverage and create meaningful assertions. **Do not** generate tests for the deleted files.
 
-  ### Added files:
-  ${addedFiles.map(file => `File Name: ${file.path} \nContent: ${file.content} \n----------------------`).join('\n')}
-
-  ### Modified files:
-  ${modifiedFiles.map(file => `File Name: ${file.path} \nContent: ${file.content} \n----------------------`).join('\n')}
-
-  ### Context Files:
-  ${contextFiles.map(file => `File Name: ${file.path} \nContent: ${file.content} \n----------------------`).join('\n')}
-
-  ### Deleted Files:
-  ${deletedFiles.map(file => `File Name: ${file.path} \nContent: ${file.content} \n----------------------`).join('\n')}
-
-  ### Imported Files:
-  ${importedFiles.map(file => `File Name: ${file.path} \nContent: ${file.content} \n----------------------`).join('\n')}
+  ${formatFileList('Added Files', addedFiles)}
+  ${formatFileList('Modified Files', modifiedFiles)}
+  ${formatFileList('Context Files', contextFiles)}
+  ${formatFileList('Deleted Files', deletedFiles)}
+  ${formatFileList('Imported Files', importedFiles)}
 
   **Requirements**:
   1. Create test cases using Jest.
