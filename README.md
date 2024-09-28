@@ -31,7 +31,7 @@ The AI Test Generation Tool automatically creates test cases for added or modifi
 
 To install the AI Test Generation Tool globally, use npm:
 ```
-npm install -g ai-tests
+npm install -g aicodegen
 ```
 
 This command installs the `aicodegen` CLI globally, making it available to use in any of your projects.
