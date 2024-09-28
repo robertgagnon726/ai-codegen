@@ -77,8 +77,8 @@ The AI Test Generation Tool uses a JSON configuration file named `aicodegen.conf
     "packageJson": "package.json", 
     "contextFiles": [ "./src/utils/testSetup.js", "./src/helpers/testUtils.js", "./src/config/globalConfig.js" ], 
     "contextLimit": 20000, 
-    "maxImportDepth": 1, 
-    "pathAliases": { "@utils": "./src/utils", "@helpers": "./src/helpers" } }
+    "maxImportDepth": 1 
+}
 ```
 
 ### Configuration Options:
