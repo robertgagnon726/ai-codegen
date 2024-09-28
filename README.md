@@ -4,15 +4,15 @@ AI Test Generation Tool is a command-line interface (CLI) application that lever
 
 ## Table of Contents
 
-1. Overview
-2. Installation
-3. Setup
-4. Configuration
-5. Usage
-6. Options
-7. Advanced Features
-8. Troubleshooting
-9. Roadmap
+1. [Overview](#overview)
+2. [Installation](#installation)
+3. [Setup](#setup)
+4. [Configuration](#configuration)
+5. [Usage](#usage)
+6. [Options](#options)
+7. [Advanced Features](#advanced-features)
+8. [Troubleshooting](#troubleshooting)
+9. [Roadmap](#roadmap)
 
 ---
 
