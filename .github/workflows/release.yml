@@ -30,9 +30,6 @@ jobs:
           node-version: '20'
           cache: 'npm'  # Caches npm dependencies for faster builds
 
-      - name: Configure npm
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > ~/.npmrc
-
       - name: Install Dependencies
         run: npm install
 

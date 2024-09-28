@@ -18,14 +18,14 @@ AI Test Generation Tool is a command-line interface (CLI) application that lever
 
 ## Overview
 
-The AI Test Generation Tool automatically creates test cases for added or modified files in your project, using a variety of context files and OpenAI models. It supports custom configuration through a dedicated configuration file, `aitests.config.json`.
+The AI Test Generation Tool automatically creates test cases for added or modified files in your project, using a variety of context files and OpenAI models. It supports custom configuration through a dedicated configuration file, `aicodegen.config.json`.
 
 ### Key Features
 - Generates Jest test cases based on added or modified code files.
 - Uses context files to improve the quality and relevance of the generated tests.
 - Supports import resolution to include context from imported files.
 - Allows for easy integration with CI/CD to automate test generation.
-- Provides customizable configuration through the `aitests.config.json` file.
+- Provides customizable configuration through the `aicodegen.config.json` file.
 
 ## Installation
 
@@ -34,7 +34,7 @@ To install the AI Test Generation Tool globally, use npm:
 npm install -g ai-tests
 ```
 
-This command installs the `aitests` CLI globally, making it available to use in any of your projects.
+This command installs the `aicodegen` CLI globally, making it available to use in any of your projects.
 
 ### Prerequisites
 
@@ -51,23 +51,23 @@ Before running the tool, ensure that all changes you want to generate tests for 
 git add .
 ```
 
-- **Configuration File**: Place a configuration file named `aitests.config.json` in the root of your project to customize the locations and file names of your configuration files. See the Configuration section for details.
+- **Configuration File**: Place a configuration file named `aicodegen.config.json` in the root of your project to customize the locations and file names of your configuration files. See the Configuration section for details.
 
 ### Setting Up Your OpenAI API Key
 
 Before you can generate tests, you need to set up your OpenAI API key:
 
 ```
-aitests config set-key <YOUR_OPENAI_API_KEY>
+aicodegen config set-key <YOUR_OPENAI_API_KEY>
 ```
 
 Replace `<YOUR_OPENAI_API_KEY>` with your actual OpenAI API key. The tool will store this key locally for future requests.
 
 ## Configuration
 
-The AI Test Generation Tool uses a JSON configuration file named `aitests.config.json` in the root of your project. This configuration file allows you to define custom paths for ESLint, TypeScript, Jest, and other important context files.
+The AI Test Generation Tool uses a JSON configuration file named `aicodegen.config.json` in the root of your project. This configuration file allows you to define custom paths for ESLint, TypeScript, Jest, and other important context files.
 
-### Example Configuration (`aitests.config.json`):
+### Example Configuration (`aicodegen.config.json`):
 
 ```
 { 
@@ -99,7 +99,7 @@ The AI Test Generation Tool uses a JSON configuration file named `aitests.config
 To generate tests for staged changes, run the following command:
 
 ```
-aitests detect-changes --output <outputFile>
+aicodegen tests --output <outputFile>
 ```
 
 This command will generate Jest test cases for all added and modified files that are currently staged and save them to the specified `<outputFile>`.
@@ -109,7 +109,7 @@ This command will generate Jest test cases for all added and modified files that
 If you want to generate tests for staged changes and save them to `generated-tests.js`:
 
 ```
-aitests detect-changes --output generated-tests.js
+aicodegen tests --output generated-tests.js
 ```
 
 ### Additional Commands
@@ -117,7 +117,7 @@ aitests detect-changes --output generated-tests.js
 1. **Set OpenAI API Key**:
 
 ```
-aitests config set-key <YOUR_OPENAI_API_KEY>
+aicodegen config set-key <YOUR_OPENAI_API_KEY>
 ```
 
 
@@ -126,7 +126,7 @@ Sets your OpenAI API key for the tool.
 2. **View Current Configuration**:
 
 ```
-aitests config view
+aicodegen config view
 ```
 
 Displays the current configuration, including paths to context files, ESLint, Jest, and TypeScript configurations.
@@ -134,21 +134,21 @@ Displays the current configuration, including paths to context files, ESLint, Je
 3. **Delete OpenAI API Key**:
 
 ```
-aitests config delete-key
+aicodegen config delete-key
 ```
 
 Removes your OpenAI API key from the local configuration.
 
 ## Options
 
-### `detect-changes` Options:
+### `tests` Options:
 - **`--output <filePath>`**: Specify the file path to save the generated test cases.
 - **`--model <model>`**: Specify the OpenAI model to use (e.g., `gpt-3.5-turbo`, `gpt-4`).
 
 ## Advanced Features
 
 1. **Path Aliases**:
-The tool supports path aliases defined in your configuration file (`aitests.config.json`). This allows the tool to resolve and include files imported using custom path aliases, providing better context for test generation.
+The tool supports path aliases defined in your configuration file (`aicodegen.config.json`). This allows the tool to resolve and include files imported using custom path aliases, providing better context for test generation.
 
 2. **Import Resolution**:
 The tool can follow relative imports up to a specified depth (`maxImportDepth`) to gather more context for complex codebases.
@@ -165,7 +165,7 @@ If generated tests are being cut off, try increasing the `max_tokens` limit in t
 If you see an error indicating that your OpenAI API key is missing, ensure that you have set it using:
 
 ```
-aitests config set-key <YOUR_OPENAI_API_KEY>
+aicodegen config set-key <YOUR_OPENAI_API_KEY>
 ```
 
 ### Not Generating Tests for All Files

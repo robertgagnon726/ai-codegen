@@ -17,12 +17,12 @@ function readJSONFile(filePath: string): Record<string, any> | null {
 }
 
 /**
- * Load the `aitests.config.json` configuration file.
+ * Load the `aicodegen.config.json` configuration file.
  * @param baseDir - The base directory where to look for the config file.
  * @returns The parsed configuration object or an empty object if not found.
  */
-function loadAitestsConfig(baseDir: string): Record<string, any> {
-  const configPath = path.join(baseDir, 'aitests.config.json');
+function loadAiCodeGenConfig(baseDir: string): Record<string, any> {
+  const configPath = path.join(baseDir, 'aicodegen.config.json');
   if (fs.existsSync(configPath)) {
     return readJSONFile(configPath) || {};
   } else {
@@ -44,8 +44,8 @@ function gatherProjectConfigs(baseDir: string = process.cwd()): Record<string, a
     packageJson: 'package.json',
   };
 
-  // Load the custom configuration from aitests.config.json if present
-  const customConfig: Record<string, any> = loadAitestsConfig(baseDir);
+  // Load the custom configuration from aicodegen.config.json if present
+  const customConfig: Record<string, any> = loadAiCodeGenConfig(baseDir);
 
   // Merge custom paths with default paths
   const configPaths: Record<string, any> = { ...defaultConfigPaths, ...customConfig };
@@ -85,4 +85,4 @@ function gatherProjectConfigs(baseDir: string = process.cwd()): Record<string, a
   return configs;
 }
 
-export { readJSONFile, loadAitestsConfig, gatherProjectConfigs };
+export { readJSONFile, loadAiCodeGenConfig, gatherProjectConfigs };

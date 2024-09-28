@@ -18,7 +18,7 @@ function getEnvFilePath(): string {
  * @returns The OpenAI API key if set, otherwise null.
  */
 function getOpenAIKey(): string | null {
-  return process.env.AITESTS_OPENAI_API_KEY || null;
+  return process.env.AI_CODE_GEN_OPENAI_API_KEY || null;
 }
 
 /**
@@ -32,10 +32,10 @@ function setOpenAIKey(apiKey: string): void {
   }
 
   let envConfig = fs.readFileSync(envFilePath, 'utf8');
-  if (envConfig.includes('AITESTS_OPENAI_API_KEY')) {
-    envConfig = envConfig.replace(/AITESTS_OPENAI_API_KEY=.*/g, `AITESTS_OPENAI_API_KEY=${apiKey}`);
+  if (envConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
+    envConfig = envConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, `AI_CODE_GEN_OPENAI_API_KEY=${apiKey}`);
   } else {
-    envConfig += `\nAITESTS_OPENAI_API_KEY=${apiKey}`;
+    envConfig += `\nAI_CODE_GEN_OPENAI_API_KEY=${apiKey}`;
   }
   fs.writeFileSync(envFilePath, envConfig);
   console.log('OpenAI API key set successfully.');
@@ -52,8 +52,8 @@ function deleteOpenAIKey(): void {
   }
 
   let envConfig = fs.readFileSync(envFilePath, 'utf8');
-  if (envConfig.includes('AITESTS_OPENAI_API_KEY')) {
-    envConfig = envConfig.replace(/AITESTS_OPENAI_API_KEY=.*/g, '');
+  if (envConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
+    envConfig = envConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, '');
     fs.writeFileSync(envFilePath, envConfig.trim());
     console.log('OpenAI API key deleted successfully.');
   } else {
@@ -62,12 +62,12 @@ function deleteOpenAIKey(): void {
 }
 
 /**
- * Load the configuration from `aitests.config.json`.
+ * Load the configuration from `aicodegen.config.json`.
  * @returns The parsed configuration object.
  */
 function loadConfig(): Record<string, any> {
   try {
-    const configPath = path.join(process.cwd(), 'aitests.config.json');
+    const configPath = path.join(process.cwd(), 'aicodegen.config.json');
     return JSON.parse(fs.readFileSync(configPath, 'utf8'));
   } catch (error) {
     console.error('Failed to load configuration file.', (error as Error).message);

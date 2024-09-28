@@ -18,10 +18,10 @@ const program = new Command();
 // Define the CLI version and description
 program.version('1.0.0').description('A CLI tool for generating, analyzing, and testing OpenAI integration');
 
-// Define the "detect-changes" command to display changed files with highlighted content differences
+// Define the "test" command to display changed files with highlighted content differences
 program
-  .command('detect-changes')
-  .description('Detect and display categorized Git changes with file content and highlights')
+  .command('tests')
+  .description('Detect changes in the codebase and generate tests using OpenAI')
   .action(async (options) => {
     const changes = getChangedFilesWithContent();
     const maxDepth = getMaxImportDepth();
@@ -74,7 +74,7 @@ program
     // Retrieve OpenAI API key from config
     const openAIKey = getOpenAIKey();
     if (!openAIKey) {
-      console.error('OpenAI API key is not set. Please set it using `aitests config set-key <apiKey>`.');
+      console.error('OpenAI API key is not set. Please set it using `aicodegen config set-key <apiKey>`.');
       return;
     }
 
@@ -130,7 +130,7 @@ configCommand
     if (key) {
       console.log(`Current OpenAI API key: ${key}`);
     } else {
-      console.warn('No OpenAI API key set. Use `aitests config set-key <apiKey>` to set it.');
+      console.warn('No OpenAI API key set. Use `aicodegen config set-key <apiKey>` to set it.');
     }
   });
 
