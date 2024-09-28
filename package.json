@@ -21,7 +21,7 @@
     "type": "git",
     "url": "git+https://github.com/robertgagnon726/ai-tests.git"
   },
-  "keywords": ["AI"],
+  "keywords": ["AI", "jest"],
   "author": "Bobby Gagnon",
   "license": "MIT",
   "dependencies": {
