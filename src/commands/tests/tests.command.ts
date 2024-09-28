@@ -1,10 +1,10 @@
-import { program } from "../../bin/cli.js";
-import { getContextTokenLimit, getOpenAIKey, getOutputFilePath } from "../../manager.config.js";
-import { createTestGenerationPrompt } from "../../utils/prompt-creator.util.js";
-import OpenAIClient from "../../openai.client.js";
-import { logger } from "../../utils/logger.util.js";
-import { processChangedFiles } from "./process-changed-files.exec.js";
-import { writeToFile } from "../../utils/write-file.util.js";
+import { program } from "../../bin/cli";
+import { getContextTokenLimit, getOpenAIKey, getOutputFilePath } from "../../manager.config";
+import { createTestGenerationPrompt } from "../../utils/prompt-creator.util";
+import OpenAIClient from "../../openai.client";
+import { logger } from "../../utils/logger.util";
+import { processChangedFiles } from "./process-changed-files.exec";
+import { writeToFile } from "../../utils/write-file.util";
 
 export function registerTestsCommand() {
 // Define the "test" command to display changed files with highlighted content differences

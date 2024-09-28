@@ -1,5 +1,5 @@
 import { execSync } from 'child_process';
-import { logger } from '../utils/logger.util.js';
+import { logger } from '../utils/logger.util';
 
 /**
  * Executes a Git command and returns the result as a string.

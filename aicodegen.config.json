@@ -1,10 +1,11 @@
 {
     "eslintConfig": "eslint.config.js",
     "tsConfig": "tsconfig.json",
-    "jestConfig": "jest.config.js",
+    "jestConfig": "jest.config.mjs",
     "packageJson": "package.json",
     "contextFiles": [
-      "jest.config.ts"
+      "babel.config.cjs",
+      "src/test-utils.ts"
     ],
     "contextTokenLimit": 20000,
     "maxImportDepth": 1,

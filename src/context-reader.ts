@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { logger } from './utils/logger.util.js';
+import { logger } from './utils/logger.util';
 
 /**
  * Reads and parses a JSON file.

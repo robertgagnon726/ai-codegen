@@ -1,7 +1,7 @@
-import { getFileContent } from "./get-file-content.git.js";
+import { getFileContent } from "./get-file-content.git";
 import path from 'path';
-import { extractImports } from "./extract-imports.git.js";
-import { FileObject } from "./git.types.js";
+import { extractImports } from "./extract-imports.git";
+import { FileObject } from "./git.types";
 
 /**
  * Recursively retrieves content for imported files based on the specified depth.

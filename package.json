@@ -8,13 +8,15 @@
     "aicodegen": "dist/bin/cli.js"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc --project tsconfig.build.json",
+    "fix-extensions": "node internals/fix-imports.internal.js",
+    "postbuild": "npm run fix-extensions",
     "prepublishOnly": "npm run build",
     "start": "npm run build && node dist/bin/cli.js",
     "clean": "rm -rf dist",
     "commit": "aicommits --generate 5 --type conventional",
-    "test": "jest --config=jest.config.ts --runInBand",
-    "test:watch": "jest --config=jest.config.ts --runInBand --watch"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.mjs",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.mjs --watch"
   },
   "files": [
     "dist",
@@ -39,12 +41,18 @@
     "ora": "^8.1.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.25.2",
+    "@babel/preset-env": "^7.25.4",
+    "@jest/globals": "^29.7.0",
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/github": "^11.0.0",
     "@semantic-release/npm": "^12.0.1",
     "@semantic-release/release-notes-generator": "^14.0.1",
+    "@types/jest": "^29.5.13",
     "aicommits": "^1.11.0",
+    "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
+    "replace-in-file": "^8.2.0",
     "semantic-release": "^24.1.2",
     "ts-jest": "^29.2.5",
     "ts-node": "^10.9.2",

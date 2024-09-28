@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { logger } from './utils/logger.util.js';
+import { logger } from './utils/logger.util';
 
 const CONFIG_FILE_NAME = '.aicodegenrc';
 const GITIGNORE_FILE_NAME = '.gitignore';

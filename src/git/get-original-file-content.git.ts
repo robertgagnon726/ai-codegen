@@ -1,5 +1,5 @@
-import { logger } from "../utils/logger.util.js";
-import { runGitCommand } from "./run-git-command.git.js";
+import { logger } from "../utils/logger.util";
+import { runGitCommand } from "./run-git-command.git";
 
 /**
  * Get the original content of a file from the last commit.

@@ -1,7 +1,7 @@
 import chalk from 'chalk';
 import OpenAI from 'openai';
 import ora from 'ora';
-import { getModel } from './manager.config.js';
+import { getModel } from './manager.config';
 
 interface Message {
   role: 'system' | 'user';
@@ -20,6 +20,7 @@ class OpenAIClient {
       apiKey: apiKey,
     });
   }
+
 
   /**
    * Generates a response based on the given prompt and context.

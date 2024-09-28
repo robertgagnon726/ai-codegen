@@ -1,6 +1,6 @@
-import { loadConfig } from "../manager.config.js";
-import { getTokenCount } from "../utils/tokenizer.util.js";
-import { FileObject } from "./git.types.js";
+import { loadConfig } from "../manager.config";
+import { getTokenCount } from "../utils/tokenizer.util";
+import { FileObject } from "./git.types";
 
 /**
  * Calculates the total token count and optimizes context based on the contextTokenLimit.
@@ -15,7 +15,7 @@ export function limitContextByTokens(files: FileObject[]): { includedFiles: File
     const excludedFiles: FileObject[] = [];
   
     files.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '');
+      const tokenCount = getTokenCount(file.content || '', file.path);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;

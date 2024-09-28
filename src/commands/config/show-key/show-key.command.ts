@@ -1,7 +1,7 @@
 import chalk from "chalk";
-import { getOpenAIKey } from "../../../manager.config.js";
+import { getOpenAIKey } from "../../../manager.config";
 import { Command } from "commander";
-import { logger } from "../../../utils/logger.util.js";
+import { logger } from "../../../utils/logger.util";
 
 export function registerShowKeyCommand(parentCommand: Command) {
   // Subcommand: Show the current OpenAI API key

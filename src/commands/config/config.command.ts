@@ -1,4 +1,4 @@
-import { program } from "../../bin/cli.js";
+import { program } from "../../bin/cli";
 
 export function registerConfigCommand() {
     // Create a parent `config` command

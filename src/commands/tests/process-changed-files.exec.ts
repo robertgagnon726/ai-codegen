@@ -1,8 +1,8 @@
-import { getChangedFilesWithContent } from "../../git/get-changed-files-with-content.git.js";
-import { getImportedFiles } from "../../git/get-imported-files.git.js";
-import { FileObject } from "../../git/git.types.js";
-import { limitContextByTokens } from "../../git/limit-context-by-tokens.git.js";
-import { getMaxImportDepth, getPathAliases } from "../../manager.config.js";
+import { getChangedFilesWithContent } from "../../git/get-changed-files-with-content.git";
+import { getImportedFiles } from "../../git/get-imported-files.git";
+import { FileObject } from "../../git/git.types";
+import { limitContextByTokens } from "../../git/limit-context-by-tokens.git";
+import { getMaxImportDepth, getPathAliases } from "../../manager.config";
 
 export function processChangedFiles() {
   const changes = getChangedFilesWithContent();

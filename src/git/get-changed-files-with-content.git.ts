@@ -1,8 +1,8 @@
-import { getContextFilePaths } from "../manager.config.js";
-import { getFileContent } from "./get-file-content.git.js";
-import { getOriginalFileContent } from "./get-original-file-content.git.js";
-import { Changes } from "./git.types.js";
-import { runGitCommand } from "./run-git-command.git.js";
+import { getContextFilePaths } from "../manager.config";
+import { getFileContent } from "./get-file-content.git";
+import { getOriginalFileContent } from "./get-original-file-content.git";
+import { Changes } from "./git.types";
+import { runGitCommand } from "./run-git-command.git";
 
 /**
  * Get the list of changed files, their content, and differences.

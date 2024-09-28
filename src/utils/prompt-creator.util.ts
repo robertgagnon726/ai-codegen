@@ -1,4 +1,4 @@
-import { FileObject } from "../git/git.types.js";
+import { FileObject } from "../git/git.types";
 
 /**
  * Utility function to format file objects into a structured string for use in prompts.

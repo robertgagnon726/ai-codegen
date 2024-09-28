@@ -1,5 +1,5 @@
 import { Command } from "commander";
-import { deleteOpenAIKey } from "../../../manager.config.js";
+import { deleteOpenAIKey } from "../../../manager.config";
 
 export function registerDeleteKeyCommand(parentCommand: Command) {
   // Subcommand: Delete the OpenAI API key

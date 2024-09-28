@@ -1,6 +1,6 @@
-import { addToGitignore, getOutputFilePath } from "../manager.config.js";
+import { addToGitignore, getOutputFilePath } from "../manager.config";
 import fs from 'fs';
-import { logger } from "./logger.util.js";
+import { logger } from "./logger.util";
 
 export const writeToFile = (content: string | null) => {
     if (!content) {

@@ -1,0 +1,17 @@
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "noEmit": false,
+      "declaration": true,
+      "allowImportingTsExtensions": false, // Turn this off for builds
+      "outDir": "./dist",
+      "baseUrl": "./",
+      "preserveSymlinks": true,
+      "paths": {
+        "*": ["src/*"] // Ensure paths resolve correctly in the output
+      }
+    },
+    "include": ["src/**/*.ts"],
+    "exclude": ["node_modules", "dist", "**/*.test.ts"]
+  }
+  

@@ -1,5 +1,5 @@
 import path from 'path';
-import { resolveFilePath } from '../utils/resolveFilePath.util.js';
+import { resolveFilePath } from '../utils/resolveFilePath.util';
 
 /**
  * Parses a file and extracts all `import` and `require` statements.
