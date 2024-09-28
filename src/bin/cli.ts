@@ -1,15 +1,19 @@
 #!/usr/bin/env node
-const { Command } = require('commander');
-const fs = require('fs');
-const path = require('path');
-const { getChangedFilesWithContent, getImportedFiles, limitContextByTokens } = require('../git-utils'); // Import the existing Git utility
-const { gatherProjectConfigs } = require('../context-reader'); // Import the context reader
-const { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, getMaxImportDepth, getPathAliases } = require('../config-manager'); // Import the config manager
-const diff = require('diff');
-const OpenAIClient = require('../openai-client'); // Import OpenAI client
-const { createTestGenerationPrompt } = require('../utils/prompt-creator');
+
+import { Command } from 'commander';
+import fs from 'fs';
+import path from 'path';
+import { getChangedFilesWithContent, getImportedFiles, limitContextByTokens } from '../git-utils';
+import { gatherProjectConfigs } from '../context-reader';
+import { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, getMaxImportDepth, getPathAliases } from '../config-manager';
+import OpenAIClient from '../openai-client';
+import { createTestGenerationPrompt } from '../utils/prompt-creator';
+import dotenv from 'dotenv';
+
+// Load .env variables
+dotenv.config();
+
 const program = new Command();
-require('dotenv').config(); // Load .env variables
 
 // Define the CLI version and description
 program.version('1.0.0').description('A CLI tool for generating, analyzing, and testing OpenAI integration');
@@ -18,21 +22,18 @@ program.version('1.0.0').description('A CLI tool for generating, analyzing, and 
 program
   .command('detect-changes')
   .description('Detect and display categorized Git changes with file content and highlights')
-  .action(async(options) => {
+  .action(async (options) => {
     const changes = getChangedFilesWithContent();
     const maxDepth = getMaxImportDepth();
     const pathAliases = getPathAliases();
 
     const configs = gatherProjectConfigs();
 
-    const importedFiles = []
+    const importedFiles: { path: string; content: string | null }[] = [];
 
     if (changes.modified.length) {
       changes.modified.forEach((file) => {
         if (file.originalContent && file.content) {
-          // Generate the diff between original and modified content
-          // const fileDiff = diff.createPatch(file.path, file.originalContent, file.content);
-
           // Include imported files content
           const _importedFiles = getImportedFiles(file.path, 1, maxDepth, pathAliases);
           importedFiles.push(..._importedFiles);
@@ -48,7 +49,7 @@ program
       });
     }
 
-    const files = [...changes.context, ...changes.modified, ...changes.added, ...importedFiles ];
+    const files = [...changes.context, ...changes.modified, ...changes.added, ...importedFiles];
 
     const { includedFiles, excludedFiles, totalTokens } = limitContextByTokens(files);
 
@@ -56,7 +57,7 @@ program
       console.error('No files found to generate tests.');
       return;
     }
-    if (totalTokens > configs.contextLimit * .9) {
+    if (totalTokens > configs.contextLimit * 0.9) {
       console.warn(`Total tokens (${totalTokens}) exceed the context limit (${configs.contextLimit}).`);
     }
 
@@ -81,7 +82,7 @@ program
     const openaiClient = new OpenAIClient(openAIKey);
 
     // Generate tests using GPT-4 with the context
-    const generatedTests = await openaiClient.generateTest(prompt, { model: 'gpt-4o-2024-08-06', max_tokens: configs.maxTokens });
+    const generatedTests = await openaiClient.generateTest(prompt, { model: 'gpt-4o-mini', max_tokens: configs.maxTokens });
 
     if (generatedTests) {
       // Determine output file path
@@ -110,15 +111,13 @@ program
   });
 
 // Create a parent `config` command
-const configCommand = program
-  .command('config')
-  .description('Manage configuration for the CLI tool');
+const configCommand = program.command('config').description('Manage configuration for the CLI tool');
 
 // Subcommand: Set the OpenAI API key
 configCommand
   .command('set-key <apiKey>')
   .description('Set the OpenAI API key for the CLI')
-  .action((apiKey) => {
+  .action((apiKey: string) => {
     setOpenAIKey(apiKey);
   });
 

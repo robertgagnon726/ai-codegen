@@ -1,13 +1,21 @@
+import { FileObject } from "../git-utils";
+
 /**
  * Creates a prompt for generating test cases without explanations.
- * @param {Array} addedFiles - Array of added file objects with path and content.
- * @param {Array} modifiedFiles - Array of modified file objects with path and content.
- * @param {Array} deletedFiles - Array of deleted file objects with path and content.
- * @param {Array} contextFiles - Array of context file objects.
- * @param {Array} importedFiles - Array of imported file objects.
- * @returns {string} - The generated prompt.
+ * @param addedFiles - Array of added file objects with path and content.
+ * @param modifiedFiles - Array of modified file objects with path and content.
+ * @param deletedFiles - Array of deleted file objects with path and content.
+ * @param contextFiles - Array of context file objects.
+ * @param importedFiles - Array of imported file objects.
+ * @returns The generated prompt as a string.
  */
-function createTestGenerationPrompt(addedFiles, modifiedFiles, deletedFiles, contextFiles, importedFiles) {
+function createTestGenerationPrompt(
+  addedFiles: FileObject[],
+  modifiedFiles: FileObject[],
+  deletedFiles: FileObject[],
+  contextFiles: FileObject[],
+  importedFiles: FileObject[]
+): string {
   return `
   You are an expert software test engineer. Your task is to generate **detailed and extensive Jest unit tests** for the following added and modified code files. Do **not** include any explanations or comments—just the raw Jest test cases.
 
@@ -44,4 +52,4 @@ function createTestGenerationPrompt(addedFiles, modifiedFiles, deletedFiles, con
   `;
 }
 
-module.exports = { createTestGenerationPrompt };
+export { createTestGenerationPrompt, FileObject };

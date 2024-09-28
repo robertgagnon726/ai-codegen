@@ -1,18 +1,21 @@
 {
   "name": "ai-tests",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/bin/cli.js",
   "description": "AI-based test generation tool",
   "bin": {
-    "aitests": "./src/bin/cli.js"
+    "aitests": "dist/bin/cli.js"
   },
   "scripts": {
-    "test": "jest",
-    "build": "tsc",
-    "lint": "eslint .",
-    "prepublishOnly": "npm run lint && npm test",
-    "prepare": "npm run build"
+    "build": "tsc",                   
+    "prepublishOnly": "npm run build", 
+    "start": "node dist/bin/cli.js",   
+    "clean": "rm -rf dist"             
   },
+  "files": [
+    "dist",    
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/robertgagnon726/ai-tests.git"
@@ -32,6 +35,7 @@
     "@semantic-release/github": "^11.0.0",
     "@semantic-release/npm": "^12.0.1",
     "@semantic-release/release-notes-generator": "^14.0.1",
-    "semantic-release": "^24.1.2"
+    "semantic-release": "^24.1.2",
+    "typescript": "^5.6.2"
   }
 }

@@ -1,13 +1,13 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 /**
  * Attempts to resolve the given file path by trying multiple extensions.
- * @param {string} basePath - The base file path without extension.
- * @returns {string|null} - The resolved file path if found, otherwise null.
+ * @param basePath - The base file path without extension.
+ * @returns The resolved file path if found, otherwise null.
  */
-function resolveFilePath(basePath) {
-  const extensions = ['.js', '.jsx', '.ts', '.tsx'];
+function resolveFilePath(basePath: string): string | null {
+  const extensions: string[] = ['.js', '.jsx', '.ts', '.tsx'];
 
   // Check if the base path exists (e.g., exact path specified)
   if (fs.existsSync(basePath) && fs.lstatSync(basePath).isFile()) {
@@ -35,4 +35,4 @@ function resolveFilePath(basePath) {
   return null; // No matching file found
 }
 
-module.exports = { resolveFilePath };
+export { resolveFilePath };

@@ -1,23 +1,27 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
-// Read and parse JSON file
-function readJSONFile(filePath) {
+/**
+ * Reads and parses a JSON file.
+ * @param filePath - The path to the JSON file.
+ * @returns The parsed JSON object or null if the file cannot be read or parsed.
+ */
+function readJSONFile(filePath: string): Record<string, any> | null {
   try {
     const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    console.error(`Failed to read or parse ${filePath}: ${error.message}`);
+    console.error(`Failed to read or parse ${filePath}: ${(error as Error).message}`);
     return null;
   }
 }
 
 /**
- * Load the aitests.config.json configuration file.
- * @param {string} baseDir The base directory where to look for the config file.
- * @returns {Object} The parsed configuration object or an empty object if not found.
+ * Load the `aitests.config.json` configuration file.
+ * @param baseDir - The base directory where to look for the config file.
+ * @returns The parsed configuration object or an empty object if not found.
  */
-function loadAitestsConfig(baseDir) {
+function loadAitestsConfig(baseDir: string): Record<string, any> {
   const configPath = path.join(baseDir, 'aitests.config.json');
   if (fs.existsSync(configPath)) {
     return readJSONFile(configPath) || {};
@@ -29,11 +33,11 @@ function loadAitestsConfig(baseDir) {
 
 /**
  * Gather essential project configurations based on custom or default paths.
- * @param {string} baseDir The base directory where to start searching for config files.
- * @returns {Object} An object containing parsed configuration files.
+ * @param baseDir - The base directory where to start searching for config files.
+ * @returns An object containing parsed configuration files.
  */
-function gatherProjectConfigs(baseDir = process.cwd()) {
-  const defaultConfigPaths = {
+function gatherProjectConfigs(baseDir: string = process.cwd()): Record<string, any> {
+  const defaultConfigPaths: Record<string, string> = {
     eslintConfig: 'eslint.config.js',
     tsConfig: 'tsconfig.json',
     jestConfig: 'jest.config.js',
@@ -41,14 +45,13 @@ function gatherProjectConfigs(baseDir = process.cwd()) {
   };
 
   // Load the custom configuration from aitests.config.json if present
-  const customConfig = loadAitestsConfig(baseDir);
+  const customConfig: Record<string, any> = loadAitestsConfig(baseDir);
 
   // Merge custom paths with default paths
-  const configPaths = { ...defaultConfigPaths, ...customConfig };
-
+  const configPaths: Record<string, any> = { ...defaultConfigPaths, ...customConfig };
 
   // Create absolute paths for the config files
-  const resolvedPaths = Object.entries(configPaths).reduce((acc, [key, relativePath]) => {
+  const resolvedPaths: Record<string, any> = Object.entries(configPaths).reduce((acc: Record<string, any>, [key, relativePath]) => {
     if (typeof relativePath === 'number') {
       return acc;
     } else if (Array.isArray(relativePath)) {
@@ -64,9 +67,10 @@ function gatherProjectConfigs(baseDir = process.cwd()) {
       acc[key] = relativePath;
     }
     return acc;
-  }, {});
+  }, {} as Record<string, any>);
+  
 
-  const configs = {};
+  const configs: Record<string, any> = {};
 
   // Iterate through the list of config files and attempt to read them
   for (const [key, filePath] of Object.entries(resolvedPaths)) {
@@ -74,12 +78,11 @@ function gatherProjectConfigs(baseDir = process.cwd()) {
       console.warn(`Config file not found: ${filePath}`);
       configs[key] = null;
     } else {
-      configs[key] =
-        filePath.endsWith('.json') ? readJSONFile(filePath) : require(filePath);
+      configs[key] = filePath.endsWith('.json') ? readJSONFile(filePath) : require(filePath);
     }
   }
 
   return configs;
 }
 
-module.exports = { gatherProjectConfigs };
+export { readJSONFile, loadAitestsConfig, gatherProjectConfigs };

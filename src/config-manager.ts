@@ -1,28 +1,31 @@
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config();
+import fs from 'fs';
+import path from 'path';
+import dotenv from 'dotenv';
+
+// Load environment variables from .env file
+dotenv.config();
 
 /**
  * Gets the path to the .env file.
- * @returns {string} The absolute path to the .env file.
+ * @returns The absolute path to the .env file.
  */
-function getEnvFilePath() {
+function getEnvFilePath(): string {
   return path.join(process.cwd(), '.env');
 }
 
 /**
  * Reads the OpenAI API key from environment variables or .env file.
- * @returns {string|null} The OpenAI API key if set, otherwise null.
+ * @returns The OpenAI API key if set, otherwise null.
  */
-function getOpenAIKey() {
+function getOpenAIKey(): string | null {
   return process.env.AITESTS_OPENAI_API_KEY || null;
 }
 
 /**
  * Sets the OpenAI API key in the environment.
- * @param {string} apiKey - The API key to set.
+ * @param apiKey - The API key to set.
  */
-function setOpenAIKey(apiKey) {
+function setOpenAIKey(apiKey: string): void {
   const envFilePath = getEnvFilePath();
   if (!fs.existsSync(envFilePath)) {
     fs.writeFileSync(envFilePath, '');
@@ -41,7 +44,7 @@ function setOpenAIKey(apiKey) {
 /**
  * Deletes the OpenAI API key from the .env file.
  */
-function deleteOpenAIKey() {
+function deleteOpenAIKey(): void {
   const envFilePath = getEnvFilePath();
   if (!fs.existsSync(envFilePath)) {
     console.warn('No .env file found.');
@@ -60,43 +63,43 @@ function deleteOpenAIKey() {
 
 /**
  * Load the configuration from `aitests.config.json`.
- * @returns {Object} - The parsed configuration object.
+ * @returns The parsed configuration object.
  */
-function loadConfig() {
+function loadConfig(): Record<string, any> {
   try {
     const configPath = path.join(process.cwd(), 'aitests.config.json');
     return JSON.parse(fs.readFileSync(configPath, 'utf8'));
   } catch (error) {
-    console.error('Failed to load configuration file.', error.message);
+    console.error('Failed to load configuration file.', (error as Error).message);
     return {};
   }
 }
 
 /**
  * Retrieve the maximum depth of imports from the configuration.
- * @returns {number} - The maximum depth of imports to include.
+ * @returns The maximum depth of imports to include.
  */
-function getMaxImportDepth() {
+function getMaxImportDepth(): number {
   const config = loadConfig();
   return config.maxImportDepth || 1;
 }
 
 /**
  * Retrieve the path aliases from the configuration.
- * @returns {Object} - An object representing path aliases and their corresponding paths.
+ * @returns An object representing path aliases and their corresponding paths.
  */
-function getPathAliases() {
+function getPathAliases(): Record<string, string> {
   const config = loadConfig();
   return config.pathAliases || {};
 }
 
 /**
  * Retrieve the context files paths from the configuration.
- * @returns {Array} - An array of context file paths specified in the config.
+ * @returns An array of context file paths specified in the config.
  */
-function getContextFilePaths() {
+function getContextFilePaths(): string[] {
   const config = loadConfig();
   return config.contextFiles || [];
 }
 
-module.exports = { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getContextFilePaths, getPathAliases, getMaxImportDepth };
+export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getContextFilePaths, getPathAliases, getMaxImportDepth };
