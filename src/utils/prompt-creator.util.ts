@@ -1,5 +1,6 @@
 import { FileObject } from "../git/git.types";
 
+
 /**
  * Utility function to format file objects into a structured string for use in prompts.
  * @param title - The title indicating the type of files (e.g., "Added Files", "Modified Files").
