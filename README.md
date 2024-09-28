@@ -173,6 +173,7 @@ Ensure that all files you want to generate tests for are staged using `git add` 
 
 ## Roadmap
 
+- [ ] Use a custom file the the env. Create a script to set this up and add it to the .gitignore
 - [ ] Filter out files to ensure only js and ts files are included in context
 - [ ] Add support for TypeScript type inference.
 - [ ] Setup ESLint and Prettier for consistent code formatting.

@@ -6,6 +6,7 @@
     "contextFiles": [
       "./context-test/testSetup.js"
     ],
-    "contextLimit": 20000,
-    "maxImportDepth": 1
+    "contextLimit": 16384,
+    "maxImportDepth": 1,
+    "model": "gpt-4o-mini"
   }

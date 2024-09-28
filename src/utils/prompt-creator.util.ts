@@ -1,4 +1,4 @@
-import { FileObject } from "../git-utils.js";
+import { FileObject } from "./git.util.js";
 
 
 /**

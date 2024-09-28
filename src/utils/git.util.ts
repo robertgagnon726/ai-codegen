@@ -1,9 +1,9 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { resolveFilePath } from './utils/resolveFilePath.js';
-import { getContextFilePaths, loadConfig } from './config-manager.js';
-import { getTokenCount } from './utils/tokenizer.js';
+import { resolveFilePath } from './resolveFilePath.util.js';
+import { getContextFilePaths, loadConfig } from '../manager.config.js';
+import { getTokenCount } from './tokenizer.util.js';
 import chalk from 'chalk';
 
 /**
@@ -223,3 +223,5 @@ function getChangedFilesWithContent(): Changes {
 }
 
 export { getChangedFilesWithContent, getFileContent, getImportedFiles, extractImports, limitContextByTokens };
+
+// TODO BG - split out these functions

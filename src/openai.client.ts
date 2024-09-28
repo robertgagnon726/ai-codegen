@@ -1,6 +1,7 @@
 import chalk from 'chalk';
 import OpenAI from 'openai';
 import ora from 'ora';
+import { getContextLimit, getModel } from './manager.config.js';
 
 interface OpenAIOptions {
   model?: string;
@@ -29,10 +30,9 @@ class OpenAIClient {
   /**
    * Generates a response based on the given prompt and context.
    * @param prompt - The main prompt to send to OpenAI.
-   * @param options - Additional options for the OpenAI completion.
    * @returns A Promise resolving to the generated response from OpenAI.
    */
-  async generateTest(prompt: string, options: OpenAIOptions = {}): Promise<string | null> {
+  async generateTest(prompt: string): Promise<string | null> {
     const systemMessage: Message = {
       role: 'system',
       content: 'You are a highly skilled software test engineer. You will generate comprehensive test cases for given code files.',
@@ -43,11 +43,14 @@ class OpenAIClient {
       content: `${prompt}`,
     };
 
+    const model = getModel();
+    const maxTokens = getContextLimit();
+
     // Set default options for the OpenAI completion
     const completionOptions = {
-      model: options.model || 'gpt-4o-mini',
-      temperature: options.temperature || 0.7,
-      max_tokens: options.max_tokens || 10000,
+      model: model,
+      temperature: 0.7,
+      max_tokens: maxTokens,
       messages: [systemMessage, userMessage],
     };
 
@@ -59,7 +62,7 @@ class OpenAIClient {
 
       return response.choices[0].message.content?.trim() ?? '';
     } catch (error: any) {
-      spinner.fail(chalk.red('❌ Merp merp... OpenAI failed!'));
+      spinner.fail(chalk.red(`❌ Merp merp... OpenAI failed! Here's the error: "${error?.message}"`, ));
       return null;
     }
   }

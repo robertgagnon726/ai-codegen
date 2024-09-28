@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build",
-    "start": "node dist/bin/cli.js",
+    "start": "npm run build && node dist/bin/cli.js",
     "clean": "rm -rf dist",
     "commit": "aicommits --generate 5 --type conventional"
   },

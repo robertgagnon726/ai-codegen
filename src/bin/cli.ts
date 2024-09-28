@@ -1,137 +1,27 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import fs from 'fs';
-import path from 'path';
-import { getChangedFilesWithContent, getImportedFiles, limitContextByTokens } from '../git-utils.js';
-import { gatherProjectConfigs } from '../context-reader.js';
-import { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, getMaxImportDepth, getPathAliases } from '../config-manager.js';
-import OpenAIClient from '../openai-client.js';
-import { createTestGenerationPrompt } from '../utils/prompt-creator.js';
 import dotenv from 'dotenv';
-import chalk from 'chalk';
+import { registerTestsCommand } from '../commands/tests/tests.command.js';
+import { registerConfigCommand } from '../commands/config/config.command.js';
+import { registerShowKeyCommand } from '../commands/config/show-key/show-key.command.js';
+import { registerSetKeyCommand } from '../commands/config/set-key/set-key.command.js';
+import { registerDeleteKeyCommand } from '../commands/config/delete-key/delete-key.command.js';
 
 // Load .env variables
 dotenv.config();
 
-const program = new Command();
+export const program = new Command();
 
 // Define the CLI version and description
 program.version('1.0.0').description('A CLI tool for generating, analyzing, and testing OpenAI integration');
 
-// Define the "test" command to display changed files with highlighted content differences
-program
-  .command('tests')
-  .description('Detect changes in the codebase and generate tests using OpenAI')
-  .action(async (options) => {
-    const changes = getChangedFilesWithContent();
-    const maxDepth = getMaxImportDepth();
-    const pathAliases = getPathAliases();
-
-    const configs = await gatherProjectConfigs();
-
-    const importedFiles: { path: string; content: string | null }[] = [];
-
-    if (changes.modified.length) {
-      changes.modified.forEach((file) => {
-        if (file.originalContent && file.content) {
-          // Include imported files content
-          const _importedFiles = getImportedFiles(file.path, 1, maxDepth, pathAliases);
-          importedFiles.push(..._importedFiles);
-        }
-      });
-    }
-
-    if (changes.added.length) {
-      changes.added.forEach((file) => {
-        // Include imported files content
-        const _importedFiles = getImportedFiles(file.path, 1, maxDepth, pathAliases);
-        importedFiles.push(..._importedFiles);
-      });
-    }
-
-    const files = [...changes.context, ...changes.modified, ...changes.added, ...importedFiles];
-
-    const { includedFiles, excludedFiles, totalTokens } = limitContextByTokens(files);
-
-    if (totalTokens === 0) {
-      chalk.red('No files found to generate tests.');
-      return;
-    }
-    if (totalTokens > configs.contextLimit * 0.9) {
-      chalk.yellow(`Total tokens (${totalTokens}) exceed the context limit (${configs.contextLimit}).`);
-    }
-
-    if (excludedFiles.length > 0) {
-      chalk.whiteBright('Excluded Files (Exceeded Context Limit):');
-      excludedFiles.forEach((file) => {
-        chalk.white(`File: ${file.path} excluded (Tokens: ${file.tokenCount})`);
-      });
-    }
-
-    // Create a prompt for OpenAI to generate tests
-    const prompt = createTestGenerationPrompt(changes.added, changes.modified, changes.deleted, changes.context, importedFiles);
-
-    // Retrieve OpenAI API key from config
-    const openAIKey = getOpenAIKey();
-    if (!openAIKey) {
-      chalk.red('OpenAI API key is not set. Please set it using `aicodegen config set-key <apiKey>`.');
-      return;
-    }
-
-    // Create an OpenAI client instance with GPT-4 model
-    const openaiClient = new OpenAIClient(openAIKey);
-
-    // Generate tests using GPT-4 with the context
-    const generatedTests = await openaiClient.generateTest(prompt, { model: 'gpt-4o-mini', max_tokens: configs.maxTokens });
-
-    if (generatedTests) {
-      // Determine output file path
-      const outputFilePath = options.output || path.join(process.cwd(), 'generated-tests.md');
-
-      // Write generated tests to the output file
-      try {
-        fs.writeFileSync(outputFilePath, generatedTests);
-        chalk.green(`\nGenerated tests have been saved to: ${outputFilePath}`);
-      } catch (error) {
-        chalk.red(`Failed to write to file: ${outputFilePath}`, error);
-      }
-    } else {
-      chalk.red('Failed to generate tests');
-    }
-  });
-
-// Create a parent `config` command
-const configCommand = program.command('config').description('Manage configuration for the CLI tool');
-
-// Subcommand: Set the OpenAI API key
-configCommand
-  .command('set-key <apiKey>')
-  .description('Set the OpenAI API key for the CLI')
-  .action((apiKey: string) => {
-    setOpenAIKey(apiKey);
-  });
-
-// Subcommand: Show the current OpenAI API key
-configCommand
-  .command('show-key')
-  .description('Show the OpenAI API key')
-  .action(() => {
-    const key = getOpenAIKey();
-    if (key) {
-      chalk.green('OpenAI API key is set.');
-    } else {
-      chalk.yellow('No OpenAI API key set. Use `aicodegen config set-key <apiKey>` to set it.');
-    }
-  });
-
-// Subcommand: Delete the OpenAI API key
-configCommand
-  .command('delete-key')
-  .description('Delete the OpenAI API key')
-  .action(() => {
-    deleteOpenAIKey();
-  });
+// Register external command(s)
+registerTestsCommand();
+const configCommand = registerConfigCommand();
+registerShowKeyCommand(configCommand);
+registerSetKeyCommand(configCommand);
+registerDeleteKeyCommand(configCommand);
 
 // Parse and execute the commands
 program.parse(process.argv);

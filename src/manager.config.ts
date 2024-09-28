@@ -95,6 +95,24 @@ function getPathAliases(): Record<string, string> {
 }
 
 /**
+ * Retrieve the model from the configuration.
+ * @returns A string representing the model to use for OpenAI completions.
+ */
+function getModel(): string {
+  const config = loadConfig();
+  return config.model || 'gpt-4o';
+}
+
+/**
+ * Retrieve the contextLimit from the configuration.
+ * @returns The maximum number of tokens to include in the context.
+ */
+function getContextLimit(): number {
+  const config = loadConfig();
+  return config.contextLimit || 3000;
+}
+
+/**
  * Retrieve the context files paths from the configuration.
  * @returns An array of context file paths specified in the config.
  */
@@ -103,4 +121,4 @@ function getContextFilePaths(): string[] {
   return config.contextFiles || [];
 }
 
-export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getContextFilePaths, getPathAliases, getMaxImportDepth };
+export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getContextFilePaths, getPathAliases, getMaxImportDepth, getModel, getContextLimit };
