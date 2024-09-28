@@ -1,4 +1,4 @@
-name: Release and Publish
+name: CI and Release Pipeline
 
 on:
   push:
@@ -17,7 +17,7 @@ permissions:
   statuses: write
 
 jobs:
-  release:
+  test-and-release:
     runs-on: ubuntu-latest
 
     steps:
@@ -28,13 +28,27 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: '20'
-          cache: 'npm'  # Caches npm dependencies for faster builds
+          cache: 'npm'
 
       - name: Install Dependencies
         run: npm install
 
+      - name: Run Tests and Generate Coverage
+        run: npm run test
+
+      - name: Upload Coverage to Coveralls
+        run: npm run coveralls
+        env:
+          COVERALLS_REPO_TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report
+          path: coverage/
+
       - name: Build Package
-        run: npm run build # Compiles TypeScript into the `dist` directory
+        run: npm run build
 
       - name: Release and Publish
         env:
