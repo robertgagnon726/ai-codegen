@@ -64,7 +64,7 @@ async function gatherProjectConfigs(baseDir: string = process.cwd()): Promise<Re
       // Resolve individual file paths
       acc[key] = path.isAbsolute(relativePath) ? relativePath : path.join(baseDir, relativePath);
     } else {
-      // Keep other configurations as is (e.g., contextLimit, maxImportDepth)
+      // Keep other configurations as is (e.g., contextTokenLimit, maxImportDepth)
       acc[key] = relativePath;
     }
     return acc;

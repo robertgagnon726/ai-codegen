@@ -1,5 +1,7 @@
 import { FileObject } from "../git/git.types.js";
 
+// TODO BG - convert the file maps to a single util
+
 /**
  * Creates a prompt for generating test cases without explanations.
  * @param addedFiles - Array of added file objects with path and content.

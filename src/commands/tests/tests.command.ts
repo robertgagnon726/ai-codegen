@@ -1,6 +1,6 @@
 import chalk from "chalk";
 import { program } from "../../bin/cli.js";
-import { getContextLimit, getMaxImportDepth, getOpenAIKey, getPathAliases } from "../../manager.config.js";
+import { getContextTokenLimit, getMaxImportDepth, getOpenAIKey, getOutputFilePath, getPathAliases } from "../../manager.config.js";
 import { createTestGenerationPrompt } from "../../utils/prompt-creator.util.js";
 import OpenAIClient from "../../openai.client.js";
 import fs from 'fs';
@@ -50,10 +50,10 @@ program
       logger.error('No files found to generate tests.');
       return;
     }
-    const contextLimit = getContextLimit()
+    const contextTokenLimit = getContextTokenLimit()
 
-    if (totalTokens > contextLimit) {
-      logger.warn(`Total tokens (${totalTokens}) exceed the context limit (${contextLimit}).`);
+    if (totalTokens > contextTokenLimit) {
+      logger.warn(`Total tokens (${totalTokens}) exceed the context limit (${contextTokenLimit}).`);
     }
 
     if (excludedFiles.length > 0) {
@@ -81,7 +81,7 @@ program
 
     if (generatedTests) {
       // Determine output file path
-      const outputFilePath = options.output || path.join(process.cwd(), 'generated-tests.md');
+      const outputFilePath = getOutputFilePath();
 
       // Write generated tests to the output file
       try {

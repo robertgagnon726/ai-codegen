@@ -105,12 +105,12 @@ function getModel(): string {
 }
 
 /**
- * Retrieve the contextLimit from the configuration.
+ * Retrieve the contextTokenLimit from the configuration.
  * @returns The maximum number of tokens to include in the context.
  */
-function getContextLimit(): number {
+function getContextTokenLimit(): number {
   const config = loadConfig();
-  return config.contextLimit || 3000;
+  return config.contextTokenLimit || 3000;
 }
 
 /**
@@ -122,4 +122,13 @@ function getContextFilePaths(): string[] {
   return config.contextFiles || [];
 }
 
-export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getContextFilePaths, getPathAliases, getMaxImportDepth, getModel, getContextLimit };
+/**
+ * Retrieve the output file path from the configuration.
+ * @returns 
+ */
+function getOutputFilePath(): string {
+  const config = loadConfig();
+  return config.outputFilePath || 'generated-tests.md';
+}
+
+export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getOutputFilePath, getContextFilePaths, getPathAliases, getMaxImportDepth, getModel, getContextTokenLimit };

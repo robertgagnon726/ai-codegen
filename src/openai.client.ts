@@ -1,13 +1,7 @@
 import chalk from 'chalk';
 import OpenAI from 'openai';
 import ora from 'ora';
-import { getContextLimit, getModel } from './manager.config.js';
-
-interface OpenAIOptions {
-  model?: string;
-  temperature?: number;
-  max_tokens?: number;
-}
+import { getModel } from './manager.config.js';
 
 interface Message {
   role: 'system' | 'user';
@@ -44,13 +38,11 @@ class OpenAIClient {
     };
 
     const model = getModel();
-    const maxTokens = getContextLimit();
 
     // Set default options for the OpenAI completion
     const completionOptions = {
       model: model,
       temperature: 0.7,
-      max_tokens: maxTokens,
       messages: [systemMessage, userMessage],
     };
 

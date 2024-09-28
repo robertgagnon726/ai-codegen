@@ -4,7 +4,8 @@
     "jestConfig": "jest.config.js",
     "packageJson": "package.json",
     "contextFiles": [],
-    "contextLimit": 16384,
+    "contextTokenLimit": 20000,
     "maxImportDepth": 1,
-    "model": "gpt-4o-mini"
+    "model": "gpt-4o-mini",
+    "outputFilePath": "generated-tests.md"
   }
