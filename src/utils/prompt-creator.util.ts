@@ -1,5 +1,4 @@
-import { FileObject } from "./git.util.js";
-
+import { FileObject } from "../git/git.types.js";
 
 /**
  * Creates a prompt for generating test cases without explanations.

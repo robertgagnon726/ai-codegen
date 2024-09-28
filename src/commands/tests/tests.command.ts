@@ -1,12 +1,14 @@
 import chalk from "chalk";
 import { program } from "../../bin/cli.js";
 import { getContextLimit, getMaxImportDepth, getOpenAIKey, getPathAliases } from "../../manager.config.js";
-import { getChangedFilesWithContent, getImportedFiles, limitContextByTokens } from "../../utils/git.util.js";
 import { createTestGenerationPrompt } from "../../utils/prompt-creator.util.js";
 import OpenAIClient from "../../openai.client.js";
 import fs from 'fs';
 import path from 'path';
 import { logger } from "../../utils/logger.util.js";
+import { getChangedFilesWithContent } from "../../git/get-changed-files-with-content.git.js";
+import { getImportedFiles } from "../../git/get-imported-files.git.js";
+import { limitContextByTokens } from "../../git/limit-context-by-tokens.git.js";
 
 // TODO BG - clean up this file
 
