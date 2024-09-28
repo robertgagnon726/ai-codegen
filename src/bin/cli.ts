@@ -3,11 +3,11 @@
 import { Command } from 'commander';
 import fs from 'fs';
 import path from 'path';
-import { getChangedFilesWithContent, getImportedFiles, limitContextByTokens } from '../git-utils';
-import { gatherProjectConfigs } from '../context-reader';
-import { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, getMaxImportDepth, getPathAliases } from '../config-manager';
-import OpenAIClient from '../openai-client';
-import { createTestGenerationPrompt } from '../utils/prompt-creator';
+import { getChangedFilesWithContent, getImportedFiles, limitContextByTokens } from '../git-utils.js';
+import { gatherProjectConfigs } from '../context-reader.js';
+import { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, getMaxImportDepth, getPathAliases } from '../config-manager.js';
+import OpenAIClient from '../openai-client.js';
+import { createTestGenerationPrompt } from '../utils/prompt-creator.js';
 import dotenv from 'dotenv';
 
 // Load .env variables

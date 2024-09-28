@@ -1,9 +1,9 @@
 import { execSync } from 'child_process';
 import fs from 'fs';
 import path from 'path';
-import { getContextFilePaths, loadConfig, getPathAliases } from './config-manager';
-import { resolveFilePath } from './utils/resolveFilePath';
-import { getTokenCount } from './utils/tokenizer';
+import { resolveFilePath } from './utils/resolveFilePath.js';
+import { getContextFilePaths, loadConfig } from './config-manager.js';
+import { getTokenCount } from './utils/tokenizer.js';
 
 /**
  * Represents a file object with a path and content.

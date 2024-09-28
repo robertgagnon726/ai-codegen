@@ -1,4 +1,5 @@
 import OpenAI from 'openai';
+import ora from 'ora';
 
 interface OpenAIOptions {
   model?: string;
@@ -49,11 +50,15 @@ class OpenAIClient {
       messages: [systemMessage, userMessage],
     };
 
+    const spinner = ora('Meep merp. Doing AI things...').start();
+
     try {
       const response = await this.client.chat.completions.create(completionOptions);
+      spinner.succeed('Merp meep. AI things done!');
+
       return response.choices[0].message.content?.trim() ?? '';
     } catch (error: any) {
-      console.error('Error generating test:', error.message);
+      spinner.fail('Merp merp. AI things failed!');
       return null;
     }
   }

@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "dist/bin/cli.js",
   "description": "AI-based code generation tool",
+  "type": "module",
   "bin": {
     "aicodegen": "dist/bin/cli.js"
   },
@@ -11,7 +12,7 @@
     "prepublishOnly": "npm run build",
     "start": "node dist/bin/cli.js",
     "clean": "rm -rf dist",
-    "commit": "aicommits --generate 5 --type conventional" 
+    "commit": "aicommits --generate 5 --type conventional"
   },
   "files": [
     "dist",
@@ -21,7 +22,10 @@
     "type": "git",
     "url": "git+https://github.com/robertgagnon726/ai-codegen.git"
   },
-  "keywords": ["AI", "jest"],
+  "keywords": [
+    "AI",
+    "jest"
+  ],
   "author": "Bobby Gagnon",
   "license": "MIT",
   "dependencies": {
@@ -29,7 +33,8 @@
     "diff": "^7.0.0",
     "dotenv": "^16.4.5",
     "gpt-3-encoder": "^1.1.4",
-    "openai": "^4.65.0"
+    "openai": "^4.65.0",
+    "ora": "^8.1.0"
   },
   "devDependencies": {
     "@semantic-release/commit-analyzer": "^13.0.0",
