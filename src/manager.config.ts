@@ -1,67 +1,117 @@
 import fs from 'fs';
 import path from 'path';
-import dotenv from 'dotenv';
-import chalk from 'chalk';
 import { logger } from './utils/logger.util.js';
 
-// Load environment variables from .env file
-dotenv.config();
+const CONFIG_FILE_NAME = '.aicodegenrc';
+const GITIGNORE_FILE_NAME = '.gitignore';
 
 /**
- * Gets the path to the .env file.
- * @returns The absolute path to the .env file.
+ * Gets the path to the .aicodegenrc file.
+ * @returns The absolute path to the .aicodegenrc file.
  */
-function getEnvFilePath(): string {
-  return path.join(process.cwd(), '.env');
+function getRcFilePath(): string {
+  return path.join(process.cwd(), CONFIG_FILE_NAME);
 }
 
 /**
- * Reads the OpenAI API key from environment variables or .env file.
- * @returns The OpenAI API key if set, otherwise null.
+ * Gets the path to the .gitignore file.
+ * @returns The absolute path to the .gitignore file.
  */
-function getOpenAIKey(): string | null {
-  return process.env.AI_CODE_GEN_OPENAI_API_KEY || null;
+function getGitignoreFilePath(): string {
+  return path.join(process.cwd(), GITIGNORE_FILE_NAME);
 }
 
 /**
- * Sets the OpenAI API key in the environment.
+ * Sets the OpenAI API key in the .aicodegenrc file.
  * @param apiKey - The API key to set.
  */
 function setOpenAIKey(apiKey: string): void {
-  const envFilePath = getEnvFilePath();
-  if (!fs.existsSync(envFilePath)) {
-    fs.writeFileSync(envFilePath, '');
+  const rcFilePath = getRcFilePath();
+  // Create the .aicodegenrc file if it doesn't exist
+  if (!fs.existsSync(rcFilePath)) {
+    fs.writeFileSync(rcFilePath, '');
   }
 
-  let envConfig = fs.readFileSync(envFilePath, 'utf8');
-  if (envConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
-    envConfig = envConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, `AI_CODE_GEN_OPENAI_API_KEY=${apiKey}`);
+  // Read the existing content or create a new one
+  let rcConfig = fs.readFileSync(rcFilePath, 'utf8');
+  if (rcConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
+    // Replace existing key if present
+    rcConfig = rcConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, `AI_CODE_GEN_OPENAI_API_KEY=${apiKey}`);
   } else {
-    envConfig += `\nAI_CODE_GEN_OPENAI_API_KEY=${apiKey}`;
+    // Append new key if not present
+    rcConfig += `\nAI_CODE_GEN_OPENAI_API_KEY=${apiKey}`;
   }
-  fs.writeFileSync(envFilePath, envConfig);
-  logger.success('OpenAI API key set successfully.');
+  fs.writeFileSync(rcFilePath, rcConfig.trim());
+  
+  // Add .aicodegenrc to .gitignore
+  addToGitignore(CONFIG_FILE_NAME);
+
+  logger.success('OpenAI API key set successfully in .aicodegenrc.');
 }
 
 /**
- * Deletes the OpenAI API key from the .env file.
+ * Deletes the OpenAI API key from the .aicodegenrc file.
  */
 function deleteOpenAIKey(): void {
-  const envFilePath = getEnvFilePath();
-  if (!fs.existsSync(envFilePath)) {
-    logger.warn('No .env file found.');
+  const rcFilePath = getRcFilePath();
+  if (!fs.existsSync(rcFilePath)) {
+    logger.warn('No .aicodegenrc file found.');
     return;
   }
 
-  let envConfig = fs.readFileSync(envFilePath, 'utf8');
-  if (envConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
-    envConfig = envConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, '');
-    fs.writeFileSync(envFilePath, envConfig.trim());
-    logger.success('OpenAI API key deleted successfully.');
+  let rcConfig = fs.readFileSync(rcFilePath, 'utf8');
+  if (rcConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
+    rcConfig = rcConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, '');
+    fs.writeFileSync(rcFilePath, rcConfig.trim());
+    logger.success('OpenAI API key deleted successfully from .aicodegenrc.');
   } else {
-    logger.error('No OpenAI API key found in .env file.');
+    logger.error('No OpenAI API key found in .aicodegenrc file.');
   }
 }
+
+/**
+ * Reads the OpenAI API key from the .aicodegenrc file.
+ * @returns The OpenAI API key if set, otherwise null.
+ */
+function getOpenAIKey(): string | null {
+  const rcFilePath = getRcFilePath();
+  if (!fs.existsSync(rcFilePath)) {
+    return null;
+  }
+
+  const rcConfig = fs.readFileSync(rcFilePath, 'utf8');
+  const match = rcConfig.match(/AI_CODE_GEN_OPENAI_API_KEY=(.*)/);
+  return match ? match[1] : null;
+}
+
+/**
+ * Adds the specified filename to .gitignore if not already present.
+ * @param filename - The name of the file to add to .gitignore.
+ */
+function addToGitignore(filename: string): void {
+  const gitignoreFilePath = getGitignoreFilePath();
+  let gitignoreContent = '';
+
+  // If .gitignore exists, read its content
+  if (fs.existsSync(gitignoreFilePath)) {
+    gitignoreContent = fs.readFileSync(gitignoreFilePath, 'utf8');
+  }
+
+  // Add the filename to .gitignore if not present
+  if (!gitignoreContent.includes(filename)) {
+    if (gitignoreContent && !gitignoreContent.endsWith('\n')) {
+      gitignoreContent += '\n';
+    }
+    gitignoreContent += `${filename}\n`;
+    fs.writeFileSync(gitignoreFilePath, gitignoreContent);
+    logger.success(`Added ${filename} to .gitignore.`);
+  } else {
+    logger.info(`${filename} is already present in .gitignore.`);
+  }
+}
+
+
+// Configs
 
 /**
  * Load the configuration from `aicodegen.config.json`.
@@ -131,4 +181,4 @@ function getOutputFilePath(): string {
   return config.outputFilePath || 'generated-tests.md';
 }
 
-export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getOutputFilePath, getContextFilePaths, getPathAliases, getMaxImportDepth, getModel, getContextTokenLimit };
+export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getOutputFilePath, getContextFilePaths, getPathAliases, getMaxImportDepth, getModel, getContextTokenLimit, addToGitignore };

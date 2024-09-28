@@ -1,4 +1,4 @@
-import { getOutputFilePath } from "../manager.config.js";
+import { addToGitignore, getOutputFilePath } from "../manager.config.js";
 import fs from 'fs';
 import { logger } from "./logger.util.js";
 
@@ -7,10 +7,11 @@ export const writeToFile = (content: string | null) => {
         logger.error("Failed to generate tests");
       return
     }
-    
+
     const outputFilePath = getOutputFilePath();
     try {
       fs.writeFileSync(outputFilePath, content);
+      addToGitignore(outputFilePath);
       logger.success(`\nGenerated tests have been saved to: ${outputFilePath}`);
     } catch (error) {
       logger.error(`Failed to write to file: ${outputFilePath} ${error}`);

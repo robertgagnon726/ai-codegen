@@ -1,15 +1,11 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
-import dotenv from 'dotenv';
 import { registerTestsCommand } from '../commands/tests/tests.command.js';
 import { registerConfigCommand } from '../commands/config/config.command.js';
 import { registerShowKeyCommand } from '../commands/config/show-key/show-key.command.js';
 import { registerSetKeyCommand } from '../commands/config/set-key/set-key.command.js';
 import { registerDeleteKeyCommand } from '../commands/config/delete-key/delete-key.command.js';
-
-// Load .env variables
-dotenv.config();
 
 export const program = new Command();
 

@@ -53,7 +53,7 @@ Before you can generate code, you need to set up your OpenAI API key:
 aicodegen config set-key <YOUR_OPENAI_API_KEY>
 ```
 
-Replace `<YOUR_OPENAI_API_KEY>` with your actual OpenAI API key. The tool will store this key locally for future requests.
+Replace `<YOUR_OPENAI_API_KEY>` with your actual OpenAI API key. The tool will store this key locally at `.aicodegenrc`. This file will also be added to your `.gitignore` file or create one if it doesn't currently exist.
 
 ## Configuration
 
@@ -158,8 +158,7 @@ Ensure that the file you want to generate tests for are staged using `git add` b
 
 ## Roadmap
 
-- [ ] Make config integration smarter
-- [ ] Use a custom file the the env. Create a script to set this up and add it to the .gitignore
+- [ ] Make config integration smarter. Implement using js or something that offers better typing/autocomplete
 - [ ] Create a setup script that adds the api key, adds a script to package.json, adds the secret file to .gitignore(or create .gitignore if it doesn't exist)
 - [ ] Filter out files to ensure only js and ts files are included in context
 - [ ] Setup ESLint and Prettier for consistent code formatting.
