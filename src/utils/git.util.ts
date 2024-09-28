@@ -5,6 +5,7 @@ import { resolveFilePath } from './resolveFilePath.util.js';
 import { getContextFilePaths, loadConfig } from '../manager.config.js';
 import { getTokenCount } from './tokenizer.util.js';
 import chalk from 'chalk';
+import { logger } from './logger.util.js';
 
 /**
  * Represents a file object with a path and content.
@@ -35,7 +36,7 @@ function runGitCommand(command: string): string {
   try {
     return execSync(command).toString().trim();
   } catch (error) {
-    chalk.red(`Error executing command: ${command}, ${(error as Error).message}`);
+    logger.error(`Error executing command: ${command}, ${(error as Error).message}`);
     return '';
   }
 }
@@ -49,12 +50,12 @@ function getFileContent(filePath: string): string | null {
   try {
     const resolvedPath = resolveFilePath(filePath);
     if (!resolvedPath) {
-      chalk.yellow(`Could not resolve file path: ${filePath}`);
+      logger.warn(`Could not resolve file path: ${filePath}`);
       return null;
     }
     return fs.readFileSync(resolvedPath, 'utf8');
   } catch (error) {
-    chalk.red(`Failed to read file: ${filePath}`, (error as Error).message);
+    logger.error(`Failed to read file: ${filePath} ${(error as Error)?.message}`, );
     return null;
   }
 }
@@ -160,7 +161,7 @@ function getOriginalFileContent(filePath: string): string | null {
   try {
     return runGitCommand(`git show HEAD:${filePath}`);
   } catch (error) {
-    chalk.yellow(`Could not retrieve original content for ${filePath}. File may be new or not committed.`);
+    logger.warn(`Could not retrieve original content for ${filePath}. File may be new or not committed.`);
     return null;
   }
 }
@@ -170,7 +171,7 @@ function getOriginalFileContent(filePath: string): string | null {
  * @returns An object containing arrays of modified, added, deleted files, and their content.
  */
 function getChangedFilesWithContent(): Changes {
-  const gitStatusOutput = runGitCommand('git status --porcelain');
+  const gitStatusOutput = runGitCommand('git diff --cached --name-status');
 
   const changes: Changes = {
     modified: [],
