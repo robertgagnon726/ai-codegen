@@ -28,7 +28,7 @@ program
     const maxDepth = getMaxImportDepth();
     const pathAliases = getPathAliases();
 
-    const configs = gatherProjectConfigs();
+    const configs = await gatherProjectConfigs();
 
     const importedFiles: { path: string; content: string | null }[] = [];
 

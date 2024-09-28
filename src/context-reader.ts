@@ -37,7 +37,7 @@ function loadAiCodeGenConfig(baseDir: string): Record<string, any> {
  * @param baseDir - The base directory where to start searching for config files.
  * @returns An object containing parsed configuration files.
  */
-function gatherProjectConfigs(baseDir: string = process.cwd()): Record<string, any> {
+async function gatherProjectConfigs(baseDir: string = process.cwd()): Promise<Record<string, any>> {
   const defaultConfigPaths: Record<string, string> = {
     eslintConfig: 'eslint.config.js',
     tsConfig: 'tsconfig.json',
@@ -79,7 +79,7 @@ function gatherProjectConfigs(baseDir: string = process.cwd()): Record<string, a
       chalk.yellow(`Config file not found: ${filePath}`);
       configs[key] = null;
     } else {
-      configs[key] = filePath.endsWith('.json') ? readJSONFile(filePath) : require(filePath);
+      configs[key] = filePath.endsWith('.json') ? readJSONFile(filePath) : await import(filePath);
     }
   }
 
