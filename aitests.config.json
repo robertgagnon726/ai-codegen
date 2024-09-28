@@ -1,0 +1,11 @@
+{
+    "eslintConfig": "eslint.config.js",
+    "tsConfig": "tsconfig.json",
+    "jestConfig": "jest.config.js",
+    "packageJson": "package.json",
+    "contextFiles": [
+      "./context-test/testSetup.js"
+    ],
+    "contextLimit": 20000,
+    "maxImportDepth": 1
+  }
