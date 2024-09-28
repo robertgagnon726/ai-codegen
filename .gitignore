@@ -4,3 +4,4 @@ dist
 .env
 
 generated-tests.js
+generated-tests.md

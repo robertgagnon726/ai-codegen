@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import fs from 'fs';
 import path from 'path';
 
@@ -11,7 +12,7 @@ function readJSONFile(filePath: string): Record<string, any> | null {
     const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data);
   } catch (error) {
-    console.error(`Failed to read or parse ${filePath}: ${(error as Error).message}`);
+    chalk.red(`Failed to read or parse ${filePath}: ${(error as Error).message}`);
     return null;
   }
 }
@@ -26,7 +27,7 @@ function loadAiCodeGenConfig(baseDir: string): Record<string, any> {
   if (fs.existsSync(configPath)) {
     return readJSONFile(configPath) || {};
   } else {
-    console.warn(`Configuration file not found at: ${configPath}. Using default paths.`);
+    chalk.yellow(`Configuration file not found at: ${configPath}. Using default paths.`);
     return {};
   }
 }
@@ -75,7 +76,7 @@ function gatherProjectConfigs(baseDir: string = process.cwd()): Record<string, a
   // Iterate through the list of config files and attempt to read them
   for (const [key, filePath] of Object.entries(resolvedPaths)) {
     if (!fs.existsSync(filePath)) {
-      console.warn(`Config file not found: ${filePath}`);
+      chalk.yellow(`Config file not found: ${filePath}`);
       configs[key] = null;
     } else {
       configs[key] = filePath.endsWith('.json') ? readJSONFile(filePath) : require(filePath);

@@ -9,6 +9,7 @@ import { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, getMaxImportDepth, getPath
 import OpenAIClient from '../openai-client.js';
 import { createTestGenerationPrompt } from '../utils/prompt-creator.js';
 import dotenv from 'dotenv';
+import chalk from 'chalk';
 
 // Load .env variables
 dotenv.config();
@@ -54,17 +55,17 @@ program
     const { includedFiles, excludedFiles, totalTokens } = limitContextByTokens(files);
 
     if (totalTokens === 0) {
-      console.error('No files found to generate tests.');
+      chalk.red('No files found to generate tests.');
       return;
     }
     if (totalTokens > configs.contextLimit * 0.9) {
-      console.warn(`Total tokens (${totalTokens}) exceed the context limit (${configs.contextLimit}).`);
+      chalk.yellow(`Total tokens (${totalTokens}) exceed the context limit (${configs.contextLimit}).`);
     }
 
     if (excludedFiles.length > 0) {
-      console.log(`\nExcluded Files (Exceeded Context Limit):`);
+      chalk.whiteBright('Excluded Files (Exceeded Context Limit):');
       excludedFiles.forEach((file) => {
-        console.log(`File: ${file.path} excluded (Tokens: ${file.tokenCount})`);
+        chalk.white(`File: ${file.path} excluded (Tokens: ${file.tokenCount})`);
       });
     }
 
@@ -74,7 +75,7 @@ program
     // Retrieve OpenAI API key from config
     const openAIKey = getOpenAIKey();
     if (!openAIKey) {
-      console.error('OpenAI API key is not set. Please set it using `aicodegen config set-key <apiKey>`.');
+      chalk.red('OpenAI API key is not set. Please set it using `aicodegen config set-key <apiKey>`.');
       return;
     }
 
@@ -86,17 +87,17 @@ program
 
     if (generatedTests) {
       // Determine output file path
-      const outputFilePath = options.output || path.join(process.cwd(), 'generated-tests.js');
+      const outputFilePath = options.output || path.join(process.cwd(), 'generated-tests.md');
 
       // Write generated tests to the output file
       try {
         fs.writeFileSync(outputFilePath, generatedTests);
-        console.log(`\nGenerated tests have been saved to: ${outputFilePath}`);
+        chalk.green(`\nGenerated tests have been saved to: ${outputFilePath}`);
       } catch (error) {
-        console.error(`Failed to write to file: ${outputFilePath}`, error);
+        chalk.red(`Failed to write to file: ${outputFilePath}`, error);
       }
     } else {
-      console.error('Failed to generate tests');
+      chalk.red('Failed to generate tests');
     }
   });
 
@@ -118,9 +119,9 @@ configCommand
   .action(() => {
     const key = getOpenAIKey();
     if (key) {
-      console.log(`Current OpenAI API key: ${key}`);
+      chalk.green('OpenAI API key is set.');
     } else {
-      console.warn('No OpenAI API key set. Use `aicodegen config set-key <apiKey>` to set it.');
+      chalk.yellow('No OpenAI API key set. Use `aicodegen config set-key <apiKey>` to set it.');
     }
   });
 

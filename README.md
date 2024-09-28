@@ -106,10 +106,10 @@ This command will generate Jest test cases for all added and modified files that
 
 ### Usage Example:
 
-If you want to generate tests for staged changes and save them to `generated-tests.js`:
+If you want to generate tests for staged changes and save them to `generated-tests.md`:
 
 ```
-aicodegen tests --output generated-tests.js
+aicodegen tests --output generated-tests.md
 ```
 
 ### Additional Commands

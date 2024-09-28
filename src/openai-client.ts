@@ -1,3 +1,4 @@
+import chalk from 'chalk';
 import OpenAI from 'openai';
 import ora from 'ora';
 
@@ -50,15 +51,15 @@ class OpenAIClient {
       messages: [systemMessage, userMessage],
     };
 
-    const spinner = ora('Meep merp. Doing AI things...').start();
+    const spinner = ora(chalk.cyan('🤖 Meep merp... Seeing if OpenAI would like to help us...')).start();
 
     try {
       const response = await this.client.chat.completions.create(completionOptions);
-      spinner.succeed('Merp meep. AI things done!');
+      spinner.succeed(chalk.green('✅ Merp meep! OpenAI hooked us up!'));
 
       return response.choices[0].message.content?.trim() ?? '';
     } catch (error: any) {
-      spinner.fail('Merp merp. AI things failed!');
+      spinner.fail(chalk.red('❌ Merp merp... OpenAI failed!'));
       return null;
     }
   }

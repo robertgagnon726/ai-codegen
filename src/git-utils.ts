@@ -4,6 +4,7 @@ import path from 'path';
 import { resolveFilePath } from './utils/resolveFilePath.js';
 import { getContextFilePaths, loadConfig } from './config-manager.js';
 import { getTokenCount } from './utils/tokenizer.js';
+import chalk from 'chalk';
 
 /**
  * Represents a file object with a path and content.
@@ -34,7 +35,7 @@ function runGitCommand(command: string): string {
   try {
     return execSync(command).toString().trim();
   } catch (error) {
-    console.error(`Error executing command: ${command}`, (error as Error).message);
+    chalk.red(`Error executing command: ${command}, ${(error as Error).message}`);
     return '';
   }
 }
@@ -48,12 +49,12 @@ function getFileContent(filePath: string): string | null {
   try {
     const resolvedPath = resolveFilePath(filePath);
     if (!resolvedPath) {
-      console.warn(`Could not resolve file path: ${filePath}`);
+      chalk.yellow(`Could not resolve file path: ${filePath}`);
       return null;
     }
     return fs.readFileSync(resolvedPath, 'utf8');
   } catch (error) {
-    console.error(`Failed to read file: ${filePath}`, (error as Error).message);
+    chalk.red(`Failed to read file: ${filePath}`, (error as Error).message);
     return null;
   }
 }
@@ -159,7 +160,7 @@ function getOriginalFileContent(filePath: string): string | null {
   try {
     return runGitCommand(`git show HEAD:${filePath}`);
   } catch (error) {
-    console.warn(`Could not retrieve original content for ${filePath}. File may be new or not committed.`);
+    chalk.yellow(`Could not retrieve original content for ${filePath}. File may be new or not committed.`);
     return null;
   }
 }

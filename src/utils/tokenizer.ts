@@ -1,4 +1,6 @@
+import chalk from 'chalk';
 import { encode } from 'gpt-3-encoder';
+import ora from 'ora';
 
 /**
  * Calculate the number of tokens in the given content.
@@ -9,10 +11,13 @@ function getTokenCount(content: string): number {
   if (!content) {
     return 0;
   }
+  const spinner = ora(chalk.cyan('🤖 Meep merp... Tokenizing your code...')).start();
   try {
-    return encode(content).length;
+    const encoded = encode(content);
+    spinner.succeed(chalk.green(`✅ Merp meep! Total input tokens: ${encoded.length}`));
+    return encoded.length;
   } catch (error) {
-    console.error('Error tokenizing content:', error);
+    spinner.fail(chalk.red('❌ Merp meep! Error tokenizing your code!'));
     return 0;
   }
 }
