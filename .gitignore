@@ -1,8 +1,9 @@
 node_modules/
-dist
+dist/
 
 .env
 
 generated-tests.js
 generated-tests.md
 .aicodegenrc
+coverage/
