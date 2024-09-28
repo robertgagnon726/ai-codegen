@@ -28,7 +28,7 @@ The AI Test Generation Tool automatically creates test cases for added or modifi
 
 ## Installation
 
-To install the AI Test Generation Tool globally, use npm:
+To install the AI Code Generation Tool, use npm:
 ```
 npm i -D aicodegen
 ```
