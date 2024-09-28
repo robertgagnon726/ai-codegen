@@ -1,6 +1,7 @@
 import chalk from "chalk";
 import { getOpenAIKey } from "../../../manager.config.js";
 import { Command } from "commander";
+import { logger } from "../../../utils/logger.util.js";
 
 export function registerShowKeyCommand(parentCommand: Command) {
   // Subcommand: Show the current OpenAI API key
@@ -10,9 +11,9 @@ export function registerShowKeyCommand(parentCommand: Command) {
     .action(() => {
       const key = getOpenAIKey();
       if (key) {
-        chalk.green('OpenAI API key is set.');
+        logger.success('OpenAI API key is set.');
       } else {
-        chalk.yellow('No OpenAI API key set. Use `aicodegen config set-key <apiKey>` to set it.');
+        logger.warn('No OpenAI API key set. Use `aicodegen config set-key <apiKey>` to set it.');
       }
     });
 }

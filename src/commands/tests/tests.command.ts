@@ -6,6 +6,9 @@ import { createTestGenerationPrompt } from "../../utils/prompt-creator.util.js";
 import OpenAIClient from "../../openai.client.js";
 import fs from 'fs';
 import path from 'path';
+import { logger } from "../../utils/logger.util.js";
+
+// TODO BG - clean up this file
 
 export function registerTestsCommand() {
 // Define the "test" command to display changed files with highlighted content differences
@@ -42,19 +45,19 @@ program
     const { includedFiles, excludedFiles, totalTokens } = limitContextByTokens(files);
 
     if (totalTokens === 0) {
-      chalk.red('No files found to generate tests.');
+      logger.error('No files found to generate tests.');
       return;
     }
     const contextLimit = getContextLimit()
 
     if (totalTokens > contextLimit) {
-      chalk.yellow(`Total tokens (${totalTokens}) exceed the context limit (${contextLimit}).`);
+      logger.warn(`Total tokens (${totalTokens}) exceed the context limit (${contextLimit}).`);
     }
 
     if (excludedFiles.length > 0) {
-      chalk.whiteBright('Excluded Files (Exceeded Context Limit):');
+      logger.info('Excluded Files (Exceeded Context Limit):');
       excludedFiles.forEach((file) => {
-        chalk.white(`File: ${file.path} excluded (Tokens: ${file.tokenCount})`);
+        logger.info(`File: ${file.path} excluded (Tokens: ${file.tokenCount})`);
       });
     }
 
@@ -64,7 +67,7 @@ program
     // Retrieve OpenAI API key from config
     const openAIKey = getOpenAIKey();
     if (!openAIKey) {
-      chalk.red('OpenAI API key is not set. Please set it using `aicodegen config set-key <apiKey>`.');
+      logger.error('OpenAI API key is not set. Please set it using `aicodegen config set-key <apiKey>`.');
       return;
     }
 
@@ -81,12 +84,12 @@ program
       // Write generated tests to the output file
       try {
         fs.writeFileSync(outputFilePath, generatedTests);
-        chalk.green(`\nGenerated tests have been saved to: ${outputFilePath}`);
+        logger.success(`\nGenerated tests have been saved to: ${outputFilePath}`);
       } catch (error) {
-        chalk.red(`Failed to write to file: ${outputFilePath}`, error);
+        logger.error(`Failed to write to file: ${outputFilePath} ${error}`);
       }
     } else {
-      chalk.red('Failed to generate tests');
+      logger.error('Failed to generate tests');
     }
   });
 }

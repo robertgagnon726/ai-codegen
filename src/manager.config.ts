@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import dotenv from 'dotenv';
 import chalk from 'chalk';
+import { logger } from './utils/logger.util.js';
 
 // Load environment variables from .env file
 dotenv.config();
@@ -39,7 +40,7 @@ function setOpenAIKey(apiKey: string): void {
     envConfig += `\nAI_CODE_GEN_OPENAI_API_KEY=${apiKey}`;
   }
   fs.writeFileSync(envFilePath, envConfig);
-  chalk.green('OpenAI API key set successfully.');
+  logger.success('OpenAI API key set successfully.');
 }
 
 /**
@@ -48,7 +49,7 @@ function setOpenAIKey(apiKey: string): void {
 function deleteOpenAIKey(): void {
   const envFilePath = getEnvFilePath();
   if (!fs.existsSync(envFilePath)) {
-    chalk.yellow('No .env file found.');
+    logger.warn('No .env file found.');
     return;
   }
 
@@ -56,9 +57,9 @@ function deleteOpenAIKey(): void {
   if (envConfig.includes('AI_CODE_GEN_OPENAI_API_KEY')) {
     envConfig = envConfig.replace(/AI_CODE_GEN_OPENAI_API_KEY=.*/g, '');
     fs.writeFileSync(envFilePath, envConfig.trim());
-    chalk.green('OpenAI API key deleted successfully.');
+    logger.success('OpenAI API key deleted successfully.');
   } else {
-    chalk.red('No OpenAI API key found in .env file.');
+    logger.error('No OpenAI API key found in .env file.');
   }
 }
 
@@ -71,7 +72,7 @@ function loadConfig(): Record<string, any> {
     const configPath = path.join(process.cwd(), 'aicodegen.config.json');
     return JSON.parse(fs.readFileSync(configPath, 'utf8'));
   } catch (error) {
-    chalk.red('Failed to load configuration file.', (error as Error).message);
+    logger.error(`Failed to load configuration file. ${(error as Error)?.message}`, );
     return {};
   }
 }
