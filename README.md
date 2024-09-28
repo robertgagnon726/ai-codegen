@@ -173,12 +173,12 @@ Ensure that all files you want to generate tests for are staged using `git add` 
 
 ## Roadmap
 
+- [ ] Filter out files to ensure only js and ts files are included in context
 - [ ] Add support for TypeScript type inference.
 - [ ] Setup ESLint and Prettier for consistent code formatting.
 - [ ] Support for additional testing frameworks.
 - [ ] Add export references to the context for enhanced test generation.
 - [ ] Support for detecting existing related tests and using them as context.
+- [ ] Add more keywords to the package.json
 
 ---
-
-// TODO BG - what are some good keywords to add to package.json?
