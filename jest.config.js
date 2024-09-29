@@ -16,7 +16,7 @@ export default {
   extensionsToTreatAsEsm: ['.ts'],
   verbose: true,
   collectCoverage: true,
-  setupFiles: ['<rootDir>/jest.setup.mjs'],
+  setupFiles: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: ['src/**/*.ts', '!src/**/*.test.ts'],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov'],

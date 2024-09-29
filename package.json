@@ -15,9 +15,9 @@
     "start": "npm run build && node dist/bin/cli.js",
     "clean": "rm -rf dist",
     "commit": "aicommits --generate 5 --type conventional",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.mjs",
-    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.mjs --watch",
-      "coveralls": "cat ./coverage/lcov.info | coveralls"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.js",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --config=jest.config.js --watch",
+    "coveralls": "cat ./coverage/lcov.info | coveralls"
   },
   "files": [
     "dist",
@@ -44,6 +44,7 @@
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@babel/preset-env": "^7.25.4",
+    "@babel/preset-typescript": "^7.24.7",
     "@jest/globals": "^29.7.0",
     "@semantic-release/commit-analyzer": "^13.0.0",
     "@semantic-release/github": "^11.0.0",
