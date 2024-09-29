@@ -1,6 +1,7 @@
 import { pathsToModuleNameMapper } from 'ts-jest';
 import fs from 'fs';
 import path from 'path';
+import dyanmicModuleNameMapper from './internals/jest-mocks.js';
 
 // Dynamically read tsconfig.json to get compilerOptions
 const tsconfig = JSON.parse(fs.readFileSync(path.resolve('./tsconfig.json'), 'utf8'));
@@ -23,11 +24,6 @@ export default {
   testMatch: ['**/__tests__/**/*.ts'],
   testPathIgnorePatterns: ['/node_modules/', '/dist/'],
   transformIgnorePatterns: ['/node_modules/(?!ora)'],
-  moduleNameMapper: pathsToModuleNameMapper(
-    compilerOptions.paths || {}, 
-    {
-      prefix: '<rootDir>/', // Ensure the prefix matches your src directory structure
-    }
-  ),
+  moduleNameMapper: dyanmicModuleNameMapper,
   moduleDirectories: ['node_modules', 'src'],
 };
