@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+
 /**
  * Attempts to resolve the given file path by trying multiple extensions.
  * @param basePath - The base file path without extension.
