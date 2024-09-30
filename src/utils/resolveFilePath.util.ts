@@ -8,7 +8,7 @@ import path from 'path';
  * @returns The resolved file path if found, otherwise null.
  */
 function resolveFilePath(basePath: string): string | null {
-  const extensions: string[] = ['.js', '.jsx', '', 'x'];
+  const extensions: string[] = ['.js', '.jsx', '.ts', '.tsx'];
 
   // Check if the base path exists (e.g., exact path specified)
   if (fs.existsSync(basePath) && fs.lstatSync(basePath).isFile()) {

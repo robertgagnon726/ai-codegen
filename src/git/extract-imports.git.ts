@@ -21,6 +21,7 @@ export function extractImports(fileContent: string, currentDir: string, pathAlia
         const absolutePath = path.resolve(currentDir, importPath);
         const resolvedPath = resolveFilePath(absolutePath); // Use the resolveFilePath utility
         if (resolvedPath) imports.push(resolvedPath);
+        // TODO - this needs to be updated/removed. We can't know what the import alias starts with
       } else if (importPath.startsWith('@')) {
         // Resolve path aliases
         const alias = Object.keys(pathAliases).find((key) => importPath.startsWith(key));
