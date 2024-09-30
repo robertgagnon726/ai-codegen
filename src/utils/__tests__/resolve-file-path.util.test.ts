@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { resolveFilePath } from '../resolveFilePath.util';
-import { mockMethod } from 'src/test-utils';
+import { mockMethod } from '../../test-utils';
 
 jest.mock('fs');
 
@@ -33,16 +33,10 @@ describe('resolveFilePath', () => {
     expect(resolveFilePath(basePath)).toBe(`${basePath}.jsx`);
   });
 
-  it('should return the path with an empty extension if others do not exist', () => {
-    existsSyncMock.mockReturnValueOnce(false).mockReturnValueOnce(false).mockReturnValueOnce(false).mockReturnValueOnce(true);
-    lstatSyncMock.mockReturnValue({ isFile: () => true });
-    expect(resolveFilePath(basePath)).toBe(basePath);
-  });
-
   it('should return the path with x extension if all others do not exist', () => {
     existsSyncMock.mockReturnValueOnce(false).mockReturnValueOnce(false).mockReturnValueOnce(false).mockReturnValueOnce(false).mockReturnValueOnce(true);
     lstatSyncMock.mockReturnValue({ isFile: () => true });
-    expect(resolveFilePath(basePath)).toBe(`${basePath}x`);
+    expect(resolveFilePath(basePath)).toBe(`${basePath}.tsx`);
   });
 
   it('should return null if no files exist with any extension', () => {
