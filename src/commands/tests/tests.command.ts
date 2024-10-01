@@ -20,8 +20,6 @@ program
       return;
     }
 
-    const configFiles = await gatherProjectConfigFiles();
-
     // Create a prompt for OpenAI to generate tests
     const prompt = createTestGenerationPrompt(includedFiles);
 
@@ -41,3 +39,6 @@ program
     writeToFile(generatedTests)
   });
 }
+
+
+// TODO BG - add a retry command if the tests aren't great before closing out the program
