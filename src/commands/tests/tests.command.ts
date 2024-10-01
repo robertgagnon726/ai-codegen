@@ -5,6 +5,7 @@ import OpenAIClient from "../../openai.client";
 import { logger } from "../../utils/logger.util";
 import { processChangedFiles } from "./process-changed-files.exec";
 import { writeToFile } from "../../utils/write-file.util";
+import { gatherProjectConfigFiles } from "../../context-reader";
 
 export function registerTestsCommand() {
 // Define the "test" command to display changed files with highlighted content differences
@@ -12,27 +13,17 @@ program
   .command('tests')
   .description('Detect changes in the codebase and generate tests using OpenAI')
   .action(async () => {
-    const { includedFiles, excludedFiles, totalTokens, changes, importedFiles } = processChangedFiles();
+    const { includedFiles, totalTokens } = await processChangedFiles();
 
     if (totalTokens === 0) {
       logger.error("No files found to generate tests.");
       return;
     }
 
-    const contextTokenLimit = getContextTokenLimit();
-    if (totalTokens > contextTokenLimit) {
-      logger.warn(`Total tokens (${totalTokens}) exceed the context limit (${contextTokenLimit}).`);
-    }
-
-    if (excludedFiles.length > 0) {
-      logger.info("Excluded Files (Exceeded Context Limit):");
-      excludedFiles.forEach((file) => {
-        logger.info(`File: ${file.path} excluded (Tokens: ${file.tokenCount})`);
-      });
-    }
+    const configFiles = await gatherProjectConfigFiles();
 
     // Create a prompt for OpenAI to generate tests
-    const prompt = createTestGenerationPrompt(changes.added, changes.modified, changes.deleted, changes.context, importedFiles);
+    const prompt = createTestGenerationPrompt(includedFiles);
 
     // Retrieve OpenAI API key from config
     const openAIKey = getOpenAIKey();

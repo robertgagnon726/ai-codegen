@@ -1,5 +1,5 @@
 import { logger } from "../utils/logger.util";
-import { resolveFilePath } from "../utils/resolveFilePath.util";
+import { resolveFilePath } from "../utils/resolve-file-path.util";
 import fs from 'fs';
 
 /**

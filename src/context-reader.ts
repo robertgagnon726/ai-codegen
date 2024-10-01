@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { logger } from './utils/logger.util';
+import { FileObject } from './git/git.types';
 
 /**
  * Reads and parses a JSON file.
@@ -37,11 +38,11 @@ function loadAiCodeGenConfig(baseDir: string): Record<string, any> {
  * @param baseDir - The base directory where to start searching for config files.
  * @returns An object containing parsed configuration files.
  */
-async function gatherProjectConfigs(baseDir: string = process.cwd()): Promise<Record<string, any>> {
+async function gatherProjectConfigFiles(baseDir: string = process.cwd()): Promise<FileObject[]> {
   const defaultConfigPaths: Record<string, string> = {
-    eslintConfig: 'eslint.config.js',
-    tsConfig: 'tsconfig.json',
-    jestConfig: 'jest.config.js',
+    // eslintConfig: 'eslint.config.js',
+    // tsConfig: 'tsconfig.json',
+    // testConfig: 'jest.config.js',
     packageJson: 'package.json',
   };
 
@@ -49,7 +50,10 @@ async function gatherProjectConfigs(baseDir: string = process.cwd()): Promise<Re
   const customConfig: Record<string, any> = loadAiCodeGenConfig(baseDir);
 
   // Merge custom paths with default paths
-  const configPaths: Record<string, any> = { ...defaultConfigPaths, ...customConfig };
+  const configPaths: Record<string, any> = { ...defaultConfigPaths };
+  if (customConfig.eslintConfig) configPaths.eslintConfig = customConfig.eslintConfig;
+  if (customConfig.tsConfig) configPaths.tsConfig = customConfig.tsConfig;
+  if (customConfig.testConfig) configPaths.testConfig = customConfig.testConfig;
 
   // Create absolute paths for the config files
   const resolvedPaths: Record<string, any> = Object.entries(configPaths).reduce((acc: Record<string, any>, [key, relativePath]) => {
@@ -71,19 +75,21 @@ async function gatherProjectConfigs(baseDir: string = process.cwd()): Promise<Re
   }, {} as Record<string, any>);
   
 
-  const configs: Record<string, any> = {};
+  const configs: FileObject[] = [];
 
   // Iterate through the list of config files and attempt to read them
   for (const [key, filePath] of Object.entries(resolvedPaths)) {
     if (!fs.existsSync(filePath)) {
       logger.warn(`Config file not found: ${filePath}`);
-      configs[key] = null;
     } else {
-      configs[key] = filePath.endsWith('.json') ? readJSONFile(filePath) : await import(filePath);
+      configs.push({
+        path: filePath,
+        content: fs.readFileSync(filePath, 'utf-8')
+      })
     }
   }
 
   return configs;
 }
 
-export { readJSONFile, loadAiCodeGenConfig, gatherProjectConfigs };
+export { readJSONFile, loadAiCodeGenConfig, gatherProjectConfigFiles };

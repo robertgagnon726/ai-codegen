@@ -137,15 +137,6 @@ function getMaxImportDepth(): number {
 }
 
 /**
- * Retrieve the path aliases from the configuration.
- * @returns An object representing path aliases and their corresponding paths.
- */
-function getPathAliases(): Record<string, string> {
-  const config = loadConfig();
-  return config.pathAliases || {};
-}
-
-/**
  * Retrieve the model from the configuration.
  * @returns A string representing the model to use for OpenAI completions.
  */
@@ -181,4 +172,14 @@ function getOutputFilePath(): string {
   return config.outputFilePath || 'generated-tests.md';
 }
 
-export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getOutputFilePath, getContextFilePaths, getPathAliases, getMaxImportDepth, getModel, getContextTokenLimit, addToGitignore };
+/**
+ * Retrieve the test framework from the configuration.
+ * @returns 
+ */
+function getTestFramework(): string {
+  const config = loadConfig();
+  return config.testFramework || 'jest'
+}
+
+
+export { getOpenAIKey, setOpenAIKey, deleteOpenAIKey, loadConfig, getOutputFilePath, getContextFilePaths, getMaxImportDepth, getModel, getContextTokenLimit, addToGitignore, getTestFramework };

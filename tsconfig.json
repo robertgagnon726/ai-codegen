@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "es2020",
-    "types": ["jest", "node"],
+    "types": ["node"],
     "lib": ["ES2020"],
     "moduleResolution": "Bundler",
     "declaration": true,

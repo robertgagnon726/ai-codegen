@@ -1,14 +1,11 @@
 {
-    "eslintConfig": "eslint.config.js",
     "tsConfig": "tsconfig.json",
-    "jestConfig": "jest.config.js",
-    "packageJson": "package.json",
+    "testConfig": "vite.config.ts",
     "contextFiles": [
-      "babel.config.js",
-      "src/test-utils.ts"
     ],
     "contextTokenLimit": 20000,
     "maxImportDepth": 1,
-    "model": "gpt-4o-mini",
-    "outputFilePath": "generated-tests.md"
+    "model": "gpt-4o",
+    "outputFilePath": "generated-tests.md",
+    "test-framework": "vite"
   }
