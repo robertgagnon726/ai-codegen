@@ -1,4 +1,5 @@
 {
+    "$schema": "./node_modules/aicodegen/internals/aicodegen-schema.json",
     "tsConfig": "tsconfig.json",
     "testConfig": "vite.config.ts",
     "testInstructions": "AICODEGEN_TESTS.md",

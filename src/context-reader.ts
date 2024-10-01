@@ -95,15 +95,13 @@ async function gatherProjectConfigFiles(baseDir: string = process.cwd()): Promis
           })
         }
       }
-    } else {
-      if (!fs.existsSync(filePath)) {
+    } else if (!fs.existsSync(filePath)) {
         logger.warn(`Config file not found: ${filePath}`);
-      } else {
-        configs.push({
-          path: filePath,
-          content: fs.readFileSync(filePath, 'utf-8')
-        })
-      }
+    } else {
+      configs.push({
+        path: filePath,
+        content: fs.readFileSync(filePath, 'utf-8')
+      })
     }
   }
 

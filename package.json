@@ -23,7 +23,8 @@
   },
   "files": [
     "dist",
-    "README.md"
+    "README.md",
+    "internals/aicodegen-schema.json"
   ],
   "repository": {
     "type": "git",

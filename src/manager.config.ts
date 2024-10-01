@@ -5,7 +5,6 @@ import { logger } from './utils/logger.util';
 const CONFIG_FILE_NAME = '.aicodegenrc';
 const GITIGNORE_FILE_NAME = '.gitignore';
 
-// TODO BG - how can I assert this type on the config file
 export interface Config {
   maxImportDepth?: number;
   model?: string;
