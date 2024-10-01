@@ -1,13 +1,16 @@
 import { logger } from '../logger.util';
 import chalk from 'chalk';
+import { describe, test, beforeEach, afterEach, expect, vi } from 'vitest';
 
 describe('Logger Utility', () => {
   beforeEach(() => {
-    console.log = jest.fn();
+    // Mock `console.log` using `vi.fn()`
+    console.log = vi.fn();
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    // Clear all mock data
+    vi.clearAllMocks();
   });
 
   test('info should log message in blue', () => {

@@ -1,4 +1,5 @@
 import { formatFileList, createTestGenerationPrompt, FileObject } from '../prompt-creator.util';
+import { describe, it, expect } from 'vitest';
 
 describe('formatFileList', () => {
   it('should return formatted string for non-empty file list', () => {
@@ -8,7 +9,7 @@ describe('formatFileList', () => {
     expect(result).toContain('### Added Files:');
     expect(result).toContain('File Name: src/file1.js');
     expect(result).toContain('Content: console.log("Hello World");');
-});
+  });
 
   it('should return "(No files)" for empty file list', () => {
     const title = 'Modified Files';
@@ -38,8 +39,8 @@ describe('formatFileList', () => {
   it('should handle undefined files array', () => {
     const title = 'Deleted Files';
     const files = undefined;
-    // @ts-ignore
-    const result = formatFileList(title, files);
+    // Use TypeScript's non-null assertion to bypass the `undefined` error
+    const result = formatFileList(title, files!);
     expect(result).toBe(`${title}:\n(No files)\n`);
   });
 });

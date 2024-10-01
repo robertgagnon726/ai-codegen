@@ -2,44 +2,48 @@ import { getTokenCount } from '../tokenizer.util';
 import ora from 'ora';
 import chalk from 'chalk';
 import { encode } from 'gpt-3-encoder';
+import { describe, test, expect, vi, beforeEach, afterEach } from 'vitest';
 
-jest.mock('ora', () => require('../../../__mocks__/ora'));
-
-
-jest.mock('ora', () => {
-  const startMock = jest.fn().mockReturnValue({
-    succeed: jest.fn(),
-    fail: jest.fn(),
-  });
-  return jest.fn(() => ({ start: startMock }));
-});
-
-jest.mock('chalk', () => ({
-  cyan: jest.fn((text) => text),
-  green: jest.fn((text) => text),
-  red: jest.fn((text) => text),
+// Mocking the required modules using `vitest`
+vi.mock('ora', () => ({
+  default: vi.fn(() => ({
+    start: vi.fn().mockReturnValue({
+      succeed: vi.fn(),
+      fail: vi.fn(),
+    }),
+  })),
 }));
-jest.mock('gpt-3-encoder', () => ({
-  encode: jest.fn(),
+
+vi.mock('chalk', () => ({
+  cyan: vi.fn((text) => text),
+  green: vi.fn((text) => text),
+  red: vi.fn((text) => text),
+}));
+
+vi.mock('gpt-3-encoder', () => ({
+  encode: vi.fn(),
 }));
 
 describe('getTokenCount', () => {
-  let startMock: jest.Mock;
-  let succeedMock: jest.Mock;
-  let failMock: jest.Mock;
+  let startMock: ReturnType<typeof vi.fn>;
+  let succeedMock: ReturnType<typeof vi.fn>;
+  let failMock: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
-    startMock = jest.fn().mockReturnValue({
-      succeed: succeedMock = jest.fn(),
-      fail: failMock = jest.fn(),
+    succeedMock = vi.fn();
+    failMock = vi.fn();
+    startMock = vi.fn().mockReturnValue({
+      succeed: succeedMock,
+      fail: failMock,
     });
+
     (ora as any).mockImplementation(() => ({
       start: startMock,
     }));
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
   });
 
   test('should return 0 if content is empty', () => {
