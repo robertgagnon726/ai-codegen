@@ -1,6 +1,8 @@
 # AI Test Generation Tool
 
 [![Coverage Status](https://coveralls.io/repos/github/robertgagnon726/ai-codegen/badge.svg?branch=main)](https://coveralls.io/github/robertgagnon726/ai-codegen?branch=main)
+![npm version](https://img.shields.io/npm/v/aicodegen.svg)
+
 
 
 AI Test Generation Tool is a command-line interface (CLI) application that leverages OpenAI's models to generate comprehensive unit tests for your code. The tool helps streamline the testing process by automating the creation of test cases based on your code changes, saving you time and reducing manual effort.
