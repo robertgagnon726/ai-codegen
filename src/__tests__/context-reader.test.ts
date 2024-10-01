@@ -82,7 +82,7 @@ describe('loadAiCodeGenConfig', () => {
 
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 
@@ -93,7 +93,7 @@ describe('loadAiCodeGenConfig', () => {
 
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.error).toHaveBeenCalledWith(expect.stringContaining('Failed to read or parse'));
   });
 
@@ -103,7 +103,7 @@ describe('loadAiCodeGenConfig', () => {
 
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 
@@ -115,7 +115,7 @@ describe('loadAiCodeGenConfig', () => {
     // @ts-expect-error
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 });
@@ -129,7 +129,7 @@ describe('gatherProjectConfigFiles', () => {
     const result = await gatherProjectConfigFiles(baseDir);
 
     expect(result).toEqual([]);
-    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Config file not found'));
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 
   it('should handle empty baseDir gracefully', async () => {
@@ -140,6 +140,6 @@ describe('gatherProjectConfigFiles', () => {
     const result = await gatherProjectConfigFiles(baseDir);
 
     expect(result).toEqual([]);
-    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Config file not found'));
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 });
