@@ -1,0 +1,56 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema",
+    "title": "AICodegen Configuration",
+    "description": "Configuration file for AICodegen tool",
+    "type": "object",
+    "properties": {
+      "maxImportDepth": {
+        "type": "number",
+        "description": "Maximum depth to import other files.",
+        "minimum": 0
+      },
+      "model": {
+        "type": "string",
+        "description": "Model to be used for code generation."
+      },
+      "contextTokenLimit": {
+        "type": "number",
+        "description": "Maximum number of tokens in the context.",
+        "minimum": 1
+      },
+      "contextFiles": {
+        "type": "array",
+        "description": "Files to be included in the context.",
+        "items": {
+          "type": "string"
+        }
+      },
+      "outputFilePath": {
+        "type": "string",
+        "description": "Path to the output file."
+      },
+      "testFramework": {
+        "type": "string",
+        "description": "Test framework to use."
+      },
+      "eslintConfig": {
+        "type": "string",
+        "description": "Path to the ESLint configuration file."
+      },
+      "tsConfig": {
+        "type": "string",
+        "description": "Path to the TypeScript configuration file."
+      },
+      "testConfig": {
+        "type": "string",
+        "description": "Path to the test configuration file."
+      },
+      "testInstructions": {
+        "type": "string",
+        "description": "Instructions for running the tests."
+      }
+    },
+    "required": [],
+    "additionalProperties": false
+  }
+  

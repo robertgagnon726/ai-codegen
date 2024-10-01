@@ -1,7 +1,5 @@
 import { describe, it, expect, vi } from 'vitest';
 import { extractImports } from '../extract-imports.git';
-import path from 'path';
-import { resolveFilePath } from '../../utils/resolve-file-path.util';
 
 vi.mock('path', () => ({
     default: {

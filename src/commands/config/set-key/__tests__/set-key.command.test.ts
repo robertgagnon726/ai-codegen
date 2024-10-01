@@ -1,7 +1,6 @@
 import { describe, it, vi, expect, beforeEach } from 'vitest';
 import { Command } from 'commander';
 import { registerSetKeyCommand } from '../set-key.command';
-import { setOpenAIKey } from '../../../../manager.config';
 
 vi.mock('../../../../manager.config', () => ({
   setOpenAIKey: vi.fn(),

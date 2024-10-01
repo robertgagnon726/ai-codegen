@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, Mock, beforeEach } from 'vitest';
-import chalk from 'chalk';
 import ora from 'ora';
 import { encode } from 'gpt-3-encoder';
 import { getTokenCount } from '../tokenizer.util';

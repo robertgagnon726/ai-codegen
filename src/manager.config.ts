@@ -5,6 +5,19 @@ import { logger } from './utils/logger.util';
 const CONFIG_FILE_NAME = '.aicodegenrc';
 const GITIGNORE_FILE_NAME = '.gitignore';
 
+export interface Config {
+  maxImportDepth?: number;
+  model?: string;
+  contextTokenLimit?: number;
+  contextFiles?: string[];
+  outputFilePath?: string;
+  testFramework?: string;
+  eslintConfig?: string;
+  tsConfig?: string;
+  testConfig?: string;
+  testInstructions?: string;
+}
+
 /**
  * Gets the path to the .aicodegenrc file.
  * @returns The absolute path to the .aicodegenrc file.
@@ -117,7 +130,7 @@ function addToGitignore(filename: string): void {
  * Load the configuration from `aicodegen.config.json`.
  * @returns The parsed configuration object.
  */
-function loadConfig(): Record<string, any> {
+function loadConfig(): Config {
   try {
     const configPath = path.join(process.cwd(), 'aicodegen.config.json');
     return JSON.parse(fs.readFileSync(configPath, 'utf8'));
@@ -133,7 +146,7 @@ function loadConfig(): Record<string, any> {
  */
 function getMaxImportDepth(): number {
   const config = loadConfig();
-  return config.maxImportDepth || 1;
+  return config.maxImportDepth ?? 1;
 }
 
 /**
@@ -142,7 +155,7 @@ function getMaxImportDepth(): number {
  */
 function getModel(): string {
   const config = loadConfig();
-  return config.model || 'gpt-4o';
+  return config.model ?? 'gpt-4o';
 }
 
 /**
@@ -151,7 +164,7 @@ function getModel(): string {
  */
 function getContextTokenLimit(): number {
   const config = loadConfig();
-  return config.contextTokenLimit || 3000;
+  return config.contextTokenLimit ?? 3000;
 }
 
 /**
@@ -160,7 +173,7 @@ function getContextTokenLimit(): number {
  */
 function getContextFilePaths(): string[] {
   const config = loadConfig();
-  return config.contextFiles || [];
+  return config.contextFiles ?? [];
 }
 
 /**
@@ -169,7 +182,7 @@ function getContextFilePaths(): string[] {
  */
 function getOutputFilePath(): string {
   const config = loadConfig();
-  return config.outputFilePath || 'generated-tests.md';
+  return config.outputFilePath ?? 'generated-tests.md';
 }
 
 /**
@@ -178,7 +191,7 @@ function getOutputFilePath(): string {
  */
 function getTestFramework(): string {
   const config = loadConfig();
-  return config.testFramework || 'jest'
+  return config.testFramework ?? 'jest'
 }
 
 

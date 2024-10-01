@@ -1,7 +1,17 @@
 # AI Test Generation Tool
 
 [![Coverage Status](https://coveralls.io/repos/github/robertgagnon726/ai-codegen/badge.svg?branch=main)](https://coveralls.io/github/robertgagnon726/ai-codegen?branch=main)
-
+[![npm version](https://img.shields.io/npm/v/aicodegen.svg)](https://www.npmjs.com/package/aicodegen)
+[![npm downloads](https://img.shields.io/npm/dw/aicodegen.svg)](https://www.npmjs.com/package/aicodegen)
+[![GitHub issues](https://img.shields.io/github/issues/robertgagnon726/ai-codegen.svg)](https://github.com/robertgagnon726/ai-codegen/issues)
+[![GitHub stars](https://img.shields.io/github/stars/robertgagnon726/ai-codegen.svg?style=social&label=Star&maxAge=2592000)](https://github.com/robertgagnon726/ai-codegen/stargazers)
+[![GitHub commit activity](https://img.shields.io/github/commit-activity/m/robertgagnon726/ai-codegen.svg)](https://github.com/robertgagnon726/ai-codegen/commits)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square)](https://github.com/robertgagnon726/ai-codegen/issues)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=robertgagnon726_ai-codegen&metric=alert_status)](https://sonarcloud.io/dashboard?id=robertgagnon726_ai-codegen)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=robertgagnon726_ai-codegen&metric=coverage)](https://sonarcloud.io/dashboard?id=robertgagnon726_ai-codegen)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=robertgagnon726_ai-codegen&metric=code_smells)](https://sonarcloud.io/dashboard?id=robertgagnon726_ai-codegen)
+[![Dependency Status](https://img.shields.io/librariesio/release/npm/aicodegen.svg)](https://libraries.io/npm/aicodegen)
+[![Build Status](https://github.com/robertgagnon726/ai-codegen/actions/workflows/release.yml/badge.svg)](https://github.com/robertgagnon726/ai-codegen/actions)
 
 AI Test Generation Tool is a command-line interface (CLI) application that leverages OpenAI's models to generate comprehensive unit tests for your code. The tool helps streamline the testing process by automating the creation of test cases based on your code changes, saving you time and reducing manual effort.
 
@@ -171,7 +181,6 @@ Ensure that the file you want to generate tests for are staged using `git add` b
 - [ ] Make config integration smarter. Implement using js or something that offers better typing/autocomplete
 - [ ] Create a setup script that adds the api key, adds a script to package.json, adds the secret file to .gitignore(or create .gitignore if it doesn't exist)
 - [ ] Filter out files to ensure only js and ts files are included in context
-- [ ] Setup ESLint and Prettier for consistent code formatting.
 - [ ] Support for additional testing frameworks.
 - [ ] Detect existing tests for the current file. If there's a test file, make sure to provide that/those as context and ask OpenAI to update the existing instead of creating a new file
 - [ ] Improve support for TypeScript in the test file generation. There's a current issue where Mocks aren't being correctly typed which makes more for editing than is ideal
@@ -181,5 +190,5 @@ Ensure that the file you want to generate tests for are staged using `git add` b
 - [ ] Allow for custom config file location
 - [ ] Add support for Claude
 - [ ] Add support for windows
-- [ ] Add additonal badges - Build Status, NPM Version, NPM Downloads, License, Open Issues, Github Stars, Code Quality, Dependencies Status, PRs Welcome, Commit Activity
+- [ ] Setup Sonar Cloud and CI requirements
 ---

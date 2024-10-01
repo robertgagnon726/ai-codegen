@@ -1,4 +1,3 @@
-import chalk from "chalk";
 import { getOpenAIKey } from "../../../manager.config";
 import { Command } from "commander";
 import { logger } from "../../../utils/logger.util";

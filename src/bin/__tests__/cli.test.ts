@@ -1,4 +1,3 @@
-import { execSync } from 'child_process';
 import { describe, it, expect, vi } from 'vitest';
 import { Command } from 'commander';
 import { program } from '../cli';
@@ -22,6 +21,7 @@ vi.mock('../../commands/config/delete-key/delete-key.command.js', () => ({
 
 describe('CLI Program', () => {
     it('should parse and execute the commands', () => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         const mockParse = vi.spyOn(program, 'parse').mockImplementation(() => {});
         program.parse(process.argv);

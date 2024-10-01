@@ -53,6 +53,7 @@ describe('readJSONFile', () => {
 
   it('should handle null return from readFileSync gracefully', () => {
     const mockFilePath = 'null.json';
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     vi.spyOn(fs, 'readFileSync').mockReturnValue(null);
 
@@ -66,7 +67,6 @@ describe('readJSONFile', () => {
 describe('loadAiCodeGenConfig', () => {
   it('should return parsed configuration object if config file exists', () => {
     const baseDir = '/base/dir';
-    const configPath = path.join(baseDir, 'aicodegen.config.json');
     const mockConfig = '{"key": "value"}';
     vi.spyOn(fs, 'existsSync').mockReturnValue(true);
     vi.spyOn(fs, 'readFileSync').mockReturnValue(mockConfig);
@@ -78,35 +78,32 @@ describe('loadAiCodeGenConfig', () => {
 
   it('should return empty object if config file does not exist', () => {
     const baseDir = '/base/dir';
-    const configPath = path.join(baseDir, 'aicodegen.config.json');
     vi.spyOn(fs, 'existsSync').mockReturnValue(false);
 
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 
   it('should return empty object if readJSONFile returns null', () => {
     const baseDir = '/base/dir';
-    const configPath = path.join(baseDir, 'aicodegen.config.json');
     vi.spyOn(fs, 'existsSync').mockReturnValue(true);
     vi.spyOn(fs, 'readFileSync').mockImplementation(() => { throw new Error('File not found'); });
 
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.error).toHaveBeenCalledWith(expect.stringContaining('Failed to read or parse'));
   });
 
   it('should handle empty baseDir gracefully', () => {
     const baseDir = '';
-    const configPath = path.join(baseDir, 'aicodegen.config.json');
     vi.spyOn(fs, 'existsSync').mockReturnValue(false);
 
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 
@@ -114,10 +111,11 @@ describe('loadAiCodeGenConfig', () => {
     const baseDir = null;
     vi.spyOn(fs, 'existsSync').mockReturnValue(false);
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const result = loadAiCodeGenConfig(baseDir);
 
-    expect(result).toEqual({});
+    expect(result).toEqual(null);
     expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 });
@@ -125,25 +123,23 @@ describe('loadAiCodeGenConfig', () => {
 describe('gatherProjectConfigFiles', () => {
   it('should handle missing config files gracefully', async () => {
     const baseDir = '/base/dir';
-    const resolvedPaths = { packageJson: path.join(baseDir, 'package.json') };
     vi.spyOn(fs, 'existsSync').mockReturnValue(false);
     vi.spyOn(path, 'join').mockImplementation((...args) => args.join('/'));
 
     const result = await gatherProjectConfigFiles(baseDir);
 
     expect(result).toEqual([]);
-    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Config file not found'));
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 
   it('should handle empty baseDir gracefully', async () => {
     const baseDir = '';
-    const resolvedPaths = { packageJson: path.join(baseDir, 'package.json') };
     vi.spyOn(fs, 'existsSync').mockReturnValue(false);
     vi.spyOn(path, 'join').mockImplementation((...args) => args.join('/'));
 
     const result = await gatherProjectConfigFiles(baseDir);
 
     expect(result).toEqual([]);
-    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Config file not found'));
+    expect(logger.warn).toHaveBeenCalledWith(expect.stringContaining('Configuration file not found'));
   });
 });

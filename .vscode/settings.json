@@ -1,0 +1,10 @@
+{
+    "json.schemas": [
+      {
+        "fileMatch": [
+          "/aicodegen.config.json"
+        ],
+        "url": "/internals/aicodegen-schema.json"
+      }
+    ]
+  }

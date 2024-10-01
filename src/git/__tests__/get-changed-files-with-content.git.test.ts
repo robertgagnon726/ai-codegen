@@ -12,10 +12,10 @@ vi.mock('../../manager.config');
 
 describe('getChangedFilesWithContent', () => {
   it('should return modified files with content', () => {
-    (runGitCommand as any).mockReturnValue('M file1.txt\n');
-    (getFileContent as any).mockReturnValueOnce('new content');
-    (getOriginalFileContent as any).mockReturnValueOnce('old content');
-    (getContextFilePaths as any).mockReturnValue([]);
+    vi.mocked(runGitCommand).mockReturnValue('M file1.txt\n');
+    vi.mocked(getFileContent).mockReturnValueOnce('new content');
+    vi.mocked(getOriginalFileContent).mockReturnValueOnce('old content');
+    vi.mocked(getContextFilePaths).mockReturnValue([]);
 
     const result = getChangedFilesWithContent();
 
@@ -26,9 +26,9 @@ describe('getChangedFilesWithContent', () => {
   });
 
   it('should return added files with content', () => {
-    (runGitCommand as any).mockReturnValue('A file2.txt\n');
-    (getFileContent as any).mockReturnValueOnce('new file content');
-    (getContextFilePaths as any).mockReturnValue([]);
+    vi.mocked(runGitCommand).mockReturnValue('A file2.txt\n');
+    vi.mocked(getFileContent).mockReturnValueOnce('new file content');
+    vi.mocked(getContextFilePaths).mockReturnValue([]);
 
     const result = getChangedFilesWithContent();
 
@@ -38,8 +38,8 @@ describe('getChangedFilesWithContent', () => {
   });
 
   it('should return deleted files', () => {
-    (runGitCommand as any).mockReturnValue('D file3.txt\n');
-    (getContextFilePaths as any).mockReturnValue([]);
+    vi.mocked(runGitCommand).mockReturnValue('D file3.txt\n');
+    vi.mocked(getContextFilePaths).mockReturnValue([]);
 
     const result = getChangedFilesWithContent();
 
@@ -49,9 +49,9 @@ describe('getChangedFilesWithContent', () => {
   });
 
   it('should return context files with content', () => {
-    (runGitCommand as any).mockReturnValue('');
-    (getContextFilePaths as any).mockReturnValue(['context1.txt']);
-    (getFileContent as any).mockReturnValueOnce('context file content');
+    vi.mocked(runGitCommand).mockReturnValue('');
+    vi.mocked(getContextFilePaths).mockReturnValue(['context1.txt']);
+    vi.mocked(getFileContent).mockReturnValueOnce('context file content');
 
     const result = getChangedFilesWithContent();
 
@@ -61,7 +61,7 @@ describe('getChangedFilesWithContent', () => {
   });
 
   it('should handle empty git status output', () => {
-    (runGitCommand as any).mockReturnValue('');
+    vi.mocked(runGitCommand).mockReturnValue('');
 
     const result = getChangedFilesWithContent();
 
@@ -72,7 +72,7 @@ describe('getChangedFilesWithContent', () => {
   });
 
   it('should handle unknown change types', () => {
-    (runGitCommand as any).mockReturnValue('X file4.txt\n');
+    vi.mocked(runGitCommand).mockReturnValue('X file4.txt\n');
 
     const result = getChangedFilesWithContent();
 
@@ -83,9 +83,9 @@ describe('getChangedFilesWithContent', () => {
   });
 
   it('should handle errors in file content retrieval', () => {
-    (runGitCommand as any).mockReturnValue('M file5.txt\n');
-    (getFileContent as any).mockReturnValueOnce(null);
-    (getOriginalFileContent as any).mockReturnValueOnce(null);
+    vi.mocked(runGitCommand).mockReturnValue('M file5.txt\n');
+    vi.mocked(getFileContent).mockReturnValueOnce(null);
+    vi.mocked(getOriginalFileContent).mockReturnValueOnce(null);
 
     const result = getChangedFilesWithContent();
 

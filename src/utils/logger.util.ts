@@ -1,19 +1,19 @@
 import chalk from "chalk";
 
 export const logger = {
-  info: (message: any) => {
+  info: (message: unknown) => {
     console.log(chalk.blue(`${message}`));
   },
-  success: (message: any) => {
+  success: (message: unknown) => {
     console.log(chalk.green(`${message}`));
   },
-  warn: (message: any) => {
+  warn: (message: unknown) => {
     console.log(chalk.yellow(`${message}`));
   },
-  error: (message: any) => {
+  error: (message: unknown) => {
     console.log(chalk.red(`${message}`));
   },
-  debug: (message: any) => {
+  debug: (message: unknown) => {
     console.log(chalk.magenta(`${message}`));
   }
 };

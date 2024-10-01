@@ -18,7 +18,7 @@ export interface IncludedFiles {
  */
 export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: FileObject[], deletedFiles: FileObject[], contextFiles: FileObject[], importedFiles: FileObject[], configFiles: FileObject[]): { includedFiles: IncludedFiles, excludedFiles: FileObject[], totalTokens: number } {
     const config = loadConfig();
-    const contextTokenLimit = config.contextTokenLimit || 3000;
+    const contextTokenLimit = config.contextTokenLimit ?? 3000;
     let totalTokens = 0;
     const includedFiles: IncludedFiles = {
       addedFiles: [],
@@ -31,7 +31,7 @@ export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: Fi
     const excludedFiles: FileObject[] = [];
   
     configFiles.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '', file.path, contextTokenLimit - totalTokens);
+      const tokenCount = getTokenCount(file.content ?? '', file.path, contextTokenLimit - totalTokens);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.configFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;
@@ -41,7 +41,7 @@ export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: Fi
     });
 
     contextFiles.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '', file.path, contextTokenLimit - totalTokens);
+      const tokenCount = getTokenCount(file.content ?? '', file.path, contextTokenLimit - totalTokens);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.contextFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;
@@ -51,7 +51,7 @@ export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: Fi
     });
 
     addedFiles.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '', file.path, contextTokenLimit - totalTokens);
+      const tokenCount = getTokenCount(file.content ?? '', file.path, contextTokenLimit - totalTokens);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.addedFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;
@@ -61,7 +61,7 @@ export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: Fi
     });
 
     modifiedFiles.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '', file.path, contextTokenLimit - totalTokens);
+      const tokenCount = getTokenCount(file.content ?? '', file.path, contextTokenLimit - totalTokens);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.modifiedFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;
@@ -71,7 +71,7 @@ export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: Fi
     });
 
     deletedFiles.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '', file.path, contextTokenLimit - totalTokens);
+      const tokenCount = getTokenCount(file.content ?? '', file.path, contextTokenLimit - totalTokens);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.deletedFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;
@@ -81,7 +81,7 @@ export function limitContextByTokens(addedFiles: FileObject[], modifiedFiles: Fi
     });
 
     importedFiles.forEach((file) => {
-      const tokenCount = getTokenCount(file.content || '', file.path, contextTokenLimit - totalTokens);
+      const tokenCount = getTokenCount(file.content ?? '', file.path, contextTokenLimit - totalTokens);
       if (totalTokens + tokenCount <= contextTokenLimit) {
         includedFiles.importedFiles.push({ ...file, tokenCount });
         totalTokens += tokenCount;
