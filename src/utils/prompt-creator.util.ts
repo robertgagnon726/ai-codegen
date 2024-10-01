@@ -40,7 +40,7 @@ function createTestGenerationPrompt(
   3. Error handling scenarios
   4. Any uncovered lines or complex logic branches.
 
-  Use the context files and imported files only to improve test coverage and create meaningful assertions. **Do not** generate tests for the deleted files.
+  Use the context files and imported files only to improve test coverage and create meaningful assertions. **Do not** generate tests for the deleted, context, config, or imported files. **Only** generate tests for the added and modied files.
 
   ${formatFileList('Added Files', includedFiles.addedFiles)}
   ${formatFileList('Modified Files', includedFiles.modifiedFiles)}
@@ -54,6 +54,7 @@ function createTestGenerationPrompt(
   2. Do **not** include any explanations or comments—just the ${testFramework} test cases.
   3. The output should contain comprehensive test coverage for each added or modified function.
   4. Include at least 5-7 unique test cases for each function covering edge cases, error handling, and different parameter inputs.
+  5. Only include tests for the added and modified files. Do **not** include tests for the deleted, context, config, or imported files.
 
   **Return only the ${testFramework} test cases for each file. Do not include summaries, descriptions, or comments.**
   `;

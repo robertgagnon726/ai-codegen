@@ -7,5 +7,5 @@
     "maxImportDepth": 1,
     "model": "gpt-4o",
     "outputFilePath": "generated-tests.md",
-    "test-framework": "vite"
+    "testFramework": "vitest"
   }
