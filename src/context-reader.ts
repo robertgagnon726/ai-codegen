@@ -54,6 +54,8 @@ async function gatherProjectConfigFiles(baseDir: string = process.cwd()): Promis
   if (customConfig.eslintConfig) configPaths.eslintConfig = customConfig.eslintConfig;
   if (customConfig.tsConfig) configPaths.tsConfig = customConfig.tsConfig;
   if (customConfig.testConfig) configPaths.testConfig = customConfig.testConfig;
+  // TODO BG - add docs for the test instructions
+  if (customConfig.testInstructions) configPaths.testInstructions = customConfig.testInstructions;  
 
   // Create absolute paths for the config files
   const resolvedPaths: Record<string, any> = Object.entries(configPaths).reduce((acc: Record<string, any>, [key, relativePath]) => {

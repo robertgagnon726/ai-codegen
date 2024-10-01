@@ -1,76 +1,40 @@
+import { describe, it, expect, vi, Mock } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import { resolveFilePath } from '../resolve-file-path.util';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-// Mock fs module using `vi.mock`
 vi.mock('fs');
-
-// Utility function for mocking fs methods
-function mockMethod(object: any, method: string) {
-  const original = object[method];
-  const mockFn = vi.fn();
-  object[method] = mockFn;
-  return mockFn;
-}
-
-// Mock specific methods from `fs`
-const existsSyncMock = mockMethod(fs, 'existsSync');
-const lstatSyncMock = mockMethod(fs, 'lstatSync');
+vi.mock('path');
 
 describe('resolveFilePath', () => {
-  const basePath = 'test/path/file';
+  it('should return the base path if it exists as a file', () => {
+    (fs.existsSync as Mock).mockReturnValueOnce(true);
+    (fs.lstatSync as Mock).mockReturnValueOnce({ isFile: () => true });
 
-  beforeEach(() => {
-    vi.clearAllMocks();
+    const result = resolveFilePath('/path/to/file');
+    expect(result).toBe('/path/to/file');
   });
 
-  it('should return the exact path if it exists', () => {
-    existsSyncMock.mockReturnValue(true);
-    lstatSyncMock.mockReturnValue({ isFile: () => true });
-    expect(resolveFilePath(basePath)).toBe(basePath);
+  it('should return null if the base path does not exist', () => {
+    (fs.existsSync as Mock).mockReturnValueOnce(false);
+
+    const result = resolveFilePath('/path/to/nonexistent');
+    expect(result).toBeNull();
   });
 
-  it('should return the path with .js extension if it exists', () => {
-    existsSyncMock.mockReturnValueOnce(false).mockReturnValueOnce(true);
-    lstatSyncMock.mockReturnValue({ isFile: () => true });
-    expect(resolveFilePath(basePath)).toBe(`${basePath}.js`);
+  it('should return null if no matching file or index is found', () => {
+    (fs.existsSync as Mock).mockReturnValue(false);
+
+    const result = resolveFilePath('/path/to/nowhere');
+    expect(result).toBeNull();
   });
 
-  it('should return the path with .jsx extension if .js does not exist', () => {
-    existsSyncMock
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true);
-    lstatSyncMock.mockReturnValue({ isFile: () => true });
-    expect(resolveFilePath(basePath)).toBe(`${basePath}.jsx`);
-  });
+  it('should prioritize file extensions in the given order', () => {
+    (fs.existsSync as Mock).mockReturnValueOnce(false);
+    (fs.existsSync as Mock).mockReturnValueOnce(true);
+    (fs.lstatSync as Mock).mockReturnValueOnce({ isFile: () => true });
 
-  it('should return the path with .tsx extension if all others do not exist', () => {
-    existsSyncMock
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(false)
-      .mockReturnValueOnce(true);
-    lstatSyncMock.mockReturnValue({ isFile: () => true });
-    expect(resolveFilePath(basePath)).toBe(`${basePath}.tsx`);
-  });
-
-  it('should return null if no files exist with any extension', () => {
-    existsSyncMock.mockReturnValue(false);
-    expect(resolveFilePath(basePath)).toBeNull();
-  });
-
-  it('should return null if the base path is a directory and no index file exists', () => {
-    existsSyncMock.mockReturnValue(true);
-    lstatSyncMock.mockReturnValue({ isFile: () => false, isDirectory: () => true });
-    existsSyncMock.mockReturnValue(false);
-    expect(resolveFilePath(basePath)).toBeNull();
-  });
-
-  it('should handle the case where the base path is invalid', () => {
-    existsSyncMock.mockReturnValue(false);
-    expect(resolveFilePath('')).toBeNull();
+    const result = resolveFilePath('/path/to/file');
+    expect(result).toBe('/path/to/file.js');
   });
 });

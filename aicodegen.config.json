@@ -1,6 +1,7 @@
 {
     "tsConfig": "tsconfig.json",
     "testConfig": "vite.config.ts",
+    "testInstructions": "AICODEGEN_TESTS.md",
     "contextFiles": [
     ],
     "contextTokenLimit": 20000,

@@ -78,7 +78,8 @@ The AI Test Generation Tool uses a JSON configuration file named `aicodegen.conf
     "maxImportDepth": 1,
     "model": "gpt-4o-mini",
     "outputFilePath": "generated-tests.md",
-    "testFramework": "jest"
+    "testFramework": "jest",
+    "testInstructions": "AICODEGEN_TESTS.md"
 }
 ```
 
@@ -102,6 +103,7 @@ git add .
 - **model**: The OpenAI model that you'd like to use. You can find a list of models available [here](https://platform.openai.com/docs/guides/rate-limits). You'll notice the are different models available for different tiers. You can find which tier your account is [here](https://platform.openai.com/settings/organization/limits)
 - **outputFilePath**: The filepath you'd like your generated file to show. The default is `generated-tests.md`. Make sure you add this path to your `.gitignore`.
 - **testFramework**: The test framework that your project uses. This could be `jest`, `vitest`, etc... 
+- **testInstructions**: This is the file where you can tweak the generated tests. Don't like the way it's mocking your tests? Add some markdown to highlight how these should look in your tests.
 
 ## Usage
 
