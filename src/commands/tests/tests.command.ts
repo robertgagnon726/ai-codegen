@@ -1,11 +1,10 @@
 import { program } from "../../bin/cli";
-import { getContextTokenLimit, getOpenAIKey, getOutputFilePath } from "../../manager.config";
+import { getOpenAIKey } from "../../manager.config";
 import { createTestGenerationPrompt } from "../../utils/prompt-creator.util";
 import OpenAIClient from "../../openai.client";
 import { logger } from "../../utils/logger.util";
 import { processChangedFiles } from "./process-changed-files.exec";
 import { writeToFile } from "../../utils/write-file.util";
-import { gatherProjectConfigFiles } from "../../context-reader";
 
 export function registerTestsCommand() {
 // Define the "test" command to display changed files with highlighted content differences

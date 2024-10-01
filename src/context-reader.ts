@@ -2,13 +2,14 @@ import fs from 'fs';
 import path from 'path';
 import { logger } from './utils/logger.util';
 import { FileObject } from './git/git.types';
+import { Config } from './manager.config';
 
 /**
  * Reads and parses a JSON file.
  * @param filePath - The path to the JSON file.
  * @returns The parsed JSON object or null if the file cannot be read or parsed.
  */
-function readJSONFile(filePath: string): Record<string, any> | null {
+function readJSONFile(filePath: string): JSON | null {
   try {
     const data = fs.readFileSync(filePath, 'utf-8');
     return JSON.parse(data);
@@ -23,13 +24,13 @@ function readJSONFile(filePath: string): Record<string, any> | null {
  * @param baseDir - The base directory where to look for the config file.
  * @returns The parsed configuration object or an empty object if not found.
  */
-function loadAiCodeGenConfig(baseDir: string): Record<string, any> {
+function loadAiCodeGenConfig(baseDir: string): Config | null{
   const configPath = path.join(baseDir, 'aicodegen.config.json');
   if (fs.existsSync(configPath)) {
-    return readJSONFile(configPath) || {};
+    return readJSONFile(configPath) as Config;
   } else {
     logger.warn(`Configuration file not found at: ${configPath}. Using default paths.`);
-    return {};
+    return null
   }
 }
 
@@ -47,10 +48,12 @@ async function gatherProjectConfigFiles(baseDir: string = process.cwd()): Promis
   };
 
   // Load the custom configuration from aicodegen.config.json if present
-  const customConfig: Record<string, any> = loadAiCodeGenConfig(baseDir);
+  const customConfig = loadAiCodeGenConfig(baseDir);
+
+  if (!customConfig) return [];
 
   // Merge custom paths with default paths
-  const configPaths: Record<string, any> = { ...defaultConfigPaths };
+  const configPaths: Config = { ...defaultConfigPaths };
   if (customConfig.eslintConfig) configPaths.eslintConfig = customConfig.eslintConfig;
   if (customConfig.tsConfig) configPaths.tsConfig = customConfig.tsConfig;
   if (customConfig.testConfig) configPaths.testConfig = customConfig.testConfig;
@@ -58,7 +61,7 @@ async function gatherProjectConfigFiles(baseDir: string = process.cwd()): Promis
   if (customConfig.testInstructions) configPaths.testInstructions = customConfig.testInstructions;  
 
   // Create absolute paths for the config files
-  const resolvedPaths: Record<string, any> = Object.entries(configPaths).reduce((acc: Record<string, any>, [key, relativePath]) => {
+  const resolvedPaths: Record<string, string | string[]> = Object.entries(configPaths).reduce((acc: Record<string, string | string[]>, [key, relativePath]) => {
     if (typeof relativePath === 'number') {
       return acc;
     } else if (Array.isArray(relativePath)) {
@@ -74,20 +77,33 @@ async function gatherProjectConfigFiles(baseDir: string = process.cwd()): Promis
       acc[key] = relativePath;
     }
     return acc;
-  }, {} as Record<string, any>);
+  }, {} as Record<string, string | string[]>);
   
 
   const configs: FileObject[] = [];
 
   // Iterate through the list of config files and attempt to read them
-  for (const [key, filePath] of Object.entries(resolvedPaths)) {
-    if (!fs.existsSync(filePath)) {
-      logger.warn(`Config file not found: ${filePath}`);
+  for (const [, filePath] of Object.entries(resolvedPaths)) {
+    if (Array.isArray(filePath)) {
+      for (const file of filePath) {
+        if (!fs.existsSync(file)) {
+          logger.warn(`Config file not found: ${file}`);
+        } else {
+          configs.push({
+            path: file,
+            content: fs.readFileSync(file, 'utf-8')
+          })
+        }
+      }
     } else {
-      configs.push({
-        path: filePath,
-        content: fs.readFileSync(filePath, 'utf-8')
-      })
+      if (!fs.existsSync(filePath)) {
+        logger.warn(`Config file not found: ${filePath}`);
+      } else {
+        configs.push({
+          path: filePath,
+          content: fs.readFileSync(filePath, 'utf-8')
+        })
+      }
     }
   }
 

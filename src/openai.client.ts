@@ -54,8 +54,12 @@ class OpenAIClient {
       spinner.succeed(chalk.green('✅ Merp meep! OpenAI hooked us up!'));
 
       return response.choices[0].message.content?.trim() ?? '';
-    } catch (error: any) {
-      spinner.fail(chalk.red(`❌ Merp merp... OpenAI failed! Here's the error: "${error?.message}"`, ));
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        spinner.fail(chalk.red(`❌ Merp merp... OpenAI failed! Here's the error: "${error.message}"`));
+      } else {
+        spinner.fail(chalk.red(`❌ Merp merp... OpenAI failed with an unknown error: "${String(error)}"`));
+      }
       return null;
     }
   }

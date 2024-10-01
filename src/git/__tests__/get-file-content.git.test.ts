@@ -81,7 +81,7 @@ describe('getFileContent', () => {
   });
 
   it('should handle non-string file path input', () => {
-    const mockFilePath = 123 as any;
+    const mockFilePath = 123 as unknown as string;
     vi.spyOn(resolveFilePathUtil, 'resolveFilePath').mockReturnValue(null);
     const warnSpy = vi.spyOn(loggerUtil.logger, 'warn');
 

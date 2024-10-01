@@ -22,7 +22,7 @@ describe('limitContextByTokens', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     (loadConfig as Mock).mockReturnValue(mockConfig);
-    (getTokenCount as Mock).mockImplementation((content, path, tokensLeft) => content.length);
+    (getTokenCount as Mock).mockImplementation((content) => content.length);
   });
 
   it('should include files within the token limit', () => {

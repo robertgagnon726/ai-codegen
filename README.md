@@ -181,7 +181,6 @@ Ensure that the file you want to generate tests for are staged using `git add` b
 - [ ] Make config integration smarter. Implement using js or something that offers better typing/autocomplete
 - [ ] Create a setup script that adds the api key, adds a script to package.json, adds the secret file to .gitignore(or create .gitignore if it doesn't exist)
 - [ ] Filter out files to ensure only js and ts files are included in context
-- [ ] Setup ESLint and Prettier for consistent code formatting.
 - [ ] Support for additional testing frameworks.
 - [ ] Detect existing tests for the current file. If there's a test file, make sure to provide that/those as context and ask OpenAI to update the existing instead of creating a new file
 - [ ] Improve support for TypeScript in the test file generation. There's a current issue where Mocks aren't being correctly typed which makes more for editing than is ideal

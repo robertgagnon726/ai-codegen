@@ -5,6 +5,20 @@ import { logger } from './utils/logger.util';
 const CONFIG_FILE_NAME = '.aicodegenrc';
 const GITIGNORE_FILE_NAME = '.gitignore';
 
+// TODO BG - how can I assert this type on the config file
+export interface Config {
+  maxImportDepth?: number;
+  model?: string;
+  contextTokenLimit?: number;
+  contextFiles?: string[];
+  outputFilePath?: string;
+  testFramework?: string;
+  eslintConfig?: string;
+  tsConfig?: string;
+  testConfig?: string;
+  testInstructions?: string;
+}
+
 /**
  * Gets the path to the .aicodegenrc file.
  * @returns The absolute path to the .aicodegenrc file.
@@ -117,7 +131,7 @@ function addToGitignore(filename: string): void {
  * Load the configuration from `aicodegen.config.json`.
  * @returns The parsed configuration object.
  */
-function loadConfig(): Record<string, any> {
+function loadConfig(): Config {
   try {
     const configPath = path.join(process.cwd(), 'aicodegen.config.json');
     return JSON.parse(fs.readFileSync(configPath, 'utf8'));

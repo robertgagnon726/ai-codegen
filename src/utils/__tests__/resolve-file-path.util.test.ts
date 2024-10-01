@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, Mock } from 'vitest';
 import fs from 'fs';
-import path from 'path';
 import { resolveFilePath } from '../resolve-file-path.util';
 
 vi.mock('fs');

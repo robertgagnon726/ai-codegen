@@ -1,6 +1,7 @@
 import { gatherProjectConfigFiles } from '../../../context-reader';
 import { getChangedFilesWithContent } from '../../../git/get-changed-files-with-content.git';
 import { getImportedFiles } from '../../../git/get-imported-files.git';
+import { FileObject } from '../../../git/git.types';
 import { limitContextByTokens } from '../../../git/limit-context-by-tokens.git';
 import { getMaxImportDepth } from '../../../manager.config';
 import { processChangedFiles } from '../process-changed-files.exec';
@@ -49,7 +50,7 @@ describe('processChangedFiles', () => {
 
   it('should handle empty changes and config files', async () => {
     const changes = { modified: [], added: [], deleted: [], context: [] };
-    const configFiles: any[] = [];
+    const configFiles: FileObject[] = [];
     const limitedContext = {
       includedFiles: { addedFiles: [], modifiedFiles: [], deletedFiles: [], contextFiles: [], importedFiles: [], configFiles: [] },
       excludedFiles: [],
@@ -75,7 +76,7 @@ describe('processChangedFiles', () => {
 
   it('should handle error in limitContextByTokens', async () => {
     const changes = { modified: [], added: [], deleted: [], context: [] };
-    const configFiles: any[] = [];
+    const configFiles: FileObject[] = [];
     vi.mocked(getChangedFilesWithContent).mockReturnValue(changes);
     vi.mocked(gatherProjectConfigFiles).mockResolvedValue(configFiles);
     vi.mocked(limitContextByTokens).mockImplementation(() => {
