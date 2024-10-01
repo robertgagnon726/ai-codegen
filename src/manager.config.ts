@@ -147,7 +147,7 @@ function loadConfig(): Config {
  */
 function getMaxImportDepth(): number {
   const config = loadConfig();
-  return config.maxImportDepth || 1;
+  return config.maxImportDepth ?? 1;
 }
 
 /**
@@ -156,7 +156,7 @@ function getMaxImportDepth(): number {
  */
 function getModel(): string {
   const config = loadConfig();
-  return config.model || 'gpt-4o';
+  return config.model ?? 'gpt-4o';
 }
 
 /**
@@ -165,7 +165,7 @@ function getModel(): string {
  */
 function getContextTokenLimit(): number {
   const config = loadConfig();
-  return config.contextTokenLimit || 3000;
+  return config.contextTokenLimit ?? 3000;
 }
 
 /**
@@ -174,7 +174,7 @@ function getContextTokenLimit(): number {
  */
 function getContextFilePaths(): string[] {
   const config = loadConfig();
-  return config.contextFiles || [];
+  return config.contextFiles ?? [];
 }
 
 /**
@@ -183,7 +183,7 @@ function getContextFilePaths(): string[] {
  */
 function getOutputFilePath(): string {
   const config = loadConfig();
-  return config.outputFilePath || 'generated-tests.md';
+  return config.outputFilePath ?? 'generated-tests.md';
 }
 
 /**
@@ -192,7 +192,7 @@ function getOutputFilePath(): string {
  */
 function getTestFramework(): string {
   const config = loadConfig();
-  return config.testFramework || 'jest'
+  return config.testFramework ?? 'jest'
 }
 
 

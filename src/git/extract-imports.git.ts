@@ -13,7 +13,7 @@ export function extractImports(fileContent: string, currentDir: string): string[
     let match;
   
     while ((match = importRegex.exec(fileContent)) !== null) {
-      const importPath = match[1] || match[2];
+      const importPath = match[1] ?? match[2];
   
       if (importPath.startsWith('.')) {
         // Resolve relative path imports
